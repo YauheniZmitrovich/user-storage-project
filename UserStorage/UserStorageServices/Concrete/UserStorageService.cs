@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Abstract;
-using UserStorageServices.Concrete;
 using UserStorageServices.CustomExceptions;
 
-namespace UserStorageServices
+namespace UserStorageServices.Concrete
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
@@ -29,6 +29,11 @@ namespace UserStorageServices
         /// </summary>
         private readonly IUserValidator _validator;
 
+        /// <summary>
+        /// Returns true if logging is enabled.
+        /// </summary>
+        private readonly BooleanSwitch _logging = new BooleanSwitch("enableLogging", "Switch in config file");
+
         #endregion
 
         #region Constructors and properties
@@ -42,8 +47,6 @@ namespace UserStorageServices
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
             _validator = validator ?? new UserValidator();
-
-            IsLoggingEnabled = true;
         }
 
         /// <summary>
@@ -51,11 +54,6 @@ namespace UserStorageServices
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
         public int Count => _users.Count;
-
-        /// <summary>
-        /// Returns true if logging is enabled.
-        /// </summary>
-        public bool IsLoggingEnabled { get; set; }
 
         #endregion
 
@@ -263,7 +261,7 @@ namespace UserStorageServices
 
         private void LogIfEnabled(string s)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine(s);
             }

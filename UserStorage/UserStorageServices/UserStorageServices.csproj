@@ -47,12 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IUserIdGenerator.cs" />
+    <Compile Include="Abstract\IUserStorageService.cs" />
     <Compile Include="Abstract\IUserValidator.cs" />
     <Compile Include="Concrete\GuidUserIdGenerator.cs" />
     <Compile Include="Concrete\UserValidator.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="UserStorageService.cs" />
+    <Compile Include="Concrete\UserStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
