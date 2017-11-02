@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace UserStorageServices
 {
@@ -7,11 +8,34 @@ namespace UserStorageServices
     /// </summary>
     public class UserStorageService
     {
+        #region Fields
+
+        /// <summary>
+        /// Container for users.
+        /// </summary>
+        private readonly HashSet<User> _users;
+
+        #endregion
+
+        #region Constructors and properties
+
+        /// <summary>
+        /// Create an instance of <see cref="UserStorageService"/>. 
+        /// </summary>
+        public UserStorageService()
+        {
+            _users = new HashSet<User>();
+        }
+
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count { get; }
+        public int Count => _users.Count;
+
+        #endregion
+
+        #region Public methods
 
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
@@ -47,5 +71,7 @@ namespace UserStorageServices
         {
             // TODO: Implement Search() method.
         }
+
+        #endregion
     }
 }
