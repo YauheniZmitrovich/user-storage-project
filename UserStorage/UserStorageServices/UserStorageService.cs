@@ -136,7 +136,7 @@ namespace UserStorageServices
 
             CheckInputName(name);
 
-            return _users.Select(u => u).Where(u => u.FirstName == name);
+            return Search(u => u.FirstName == name);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace UserStorageServices
 
             CheckInputName(name);
 
-            return _users.Select(u => u).Where(u => u.LastName == name);
+            return Search(u => u.LastName == name);
         }
 
         /// <summary>
@@ -163,15 +163,15 @@ namespace UserStorageServices
                 throw new ArgumentException("Input age is incorrect");
             }
 
-            return _users.Select(u => u).Where(u => u.Age == age);
+            return Search(u => u.Age == age);
         }
 
         /// <summary>
         /// Searches through the storage for a <see cref="User"/> by predicate.
         /// </summary>
-        public IEnumerable<User> FindMany(Predicate<User> comparer)
+        public IEnumerable<User> Search(Predicate<User> comparer)
         {
-            LogIfEnabled("FindMany method is called.");
+            LogIfEnabled("Search method is called.");
 
             if (comparer == null)
             {
@@ -182,7 +182,6 @@ namespace UserStorageServices
         }
 
         #endregion
-
 
         #region returns User
 
@@ -195,7 +194,7 @@ namespace UserStorageServices
 
             CheckInputName(name);
 
-            return _users.First(u => u.FirstName == name);
+            return FindFirst(u => u.FirstName == name);
         }
 
         /// <summary>
@@ -207,7 +206,7 @@ namespace UserStorageServices
 
             CheckInputName(name);
 
-            return _users.First(u => u.LastName == name);
+            return FindFirst(u => u.LastName == name);
         }
 
         /// <summary>
@@ -222,9 +221,8 @@ namespace UserStorageServices
                 throw new ArgumentException("Input age is incorrect");
             }
 
-            return _users.First(u => u.Age == age);
+            return FindFirst(u => u.Age == age);
         }
-
 
         /// <summary>
         /// Searches through the storage for a <see cref="User"/> by predicate.

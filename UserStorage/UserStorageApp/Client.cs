@@ -20,18 +20,20 @@ namespace UserStorageApp
         /// <summary>
         /// Runs a sequence of actions on an instance of the <see cref="UserStorageService"/> class.
         /// </summary>
-        public void Run()//TODO:
+        public void Run()
         {
-            //_userStorageService.Add(new User
-            //{
-            //    FirstName = "Alex",
-            //    LastName = "Black",
-            //    Age = 25
-            //});
+            User user = new User
+            {
+                FirstName = "Alex",
+                LastName = "Black",
+                Age = 25
+            };
 
-            //_userStorageService.Remove();
+            _userStorageService.Add(user);
 
-            //_userStorageService.Search();
+            _userStorageService.Remove(user);
+
+            _userStorageService.SearchByFirstName("Alex");
         }
     }
 }
