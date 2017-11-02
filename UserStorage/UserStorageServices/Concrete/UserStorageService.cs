@@ -71,18 +71,7 @@ namespace UserStorageServices
         {
             LogIfEnabled("Add method is called.");
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            CheckInputName(user.FirstName);
-            CheckInputName(user.LastName);
-
-            if (user.Age < 1 || user.Age > 200)
-            {
-                throw new ArgumentException("Age have to be more than zero and less than 200", nameof(user));
-            }
+            _validator.Validate(user);
 
             user.Id = _userIdGenerator.Generate();
 
