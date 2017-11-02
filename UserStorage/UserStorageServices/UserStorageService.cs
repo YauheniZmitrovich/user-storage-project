@@ -27,6 +27,8 @@ namespace UserStorageServices
         public UserStorageService()
         {
             _users = new HashSet<User>();
+
+            IsLoggingEnabled = true;
         }
 
         /// <summary>
@@ -34,6 +36,11 @@ namespace UserStorageServices
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
         public int Count => _users.Count;
+
+        /// <summary>
+        /// Returns true if logging is enabled.
+        /// </summary>
+        public bool IsLoggingEnabled { get; set; }
 
         #endregion
 
@@ -47,6 +54,8 @@ namespace UserStorageServices
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
+            LogIfEnabled("Add method is called.");
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -80,6 +89,8 @@ namespace UserStorageServices
         /// </summary>
         public void Remove(Guid id)
         {
+            LogIfEnabled("Remove(Guid id) method is called.");
+
             int number = _users.RemoveWhere(x => x.Id == id);
 
             if (number == 0)
@@ -93,6 +104,8 @@ namespace UserStorageServices
         /// </summary>
         public void Remove(User user)
         {
+            LogIfEnabled("Remove(User user) method is called.");
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -119,6 +132,8 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByFirstName(string name)
         {
+            LogIfEnabled("SearchByFirstName method is called.");
+
             CheckInputName(name);
 
             return _users.Select(u => u).Where(u => u.FirstName == name);
@@ -129,6 +144,8 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByLastName(string name)
         {
+            LogIfEnabled("SearchByLastName method is called.");
+
             CheckInputName(name);
 
             return _users.Select(u => u).Where(u => u.LastName == name);
@@ -139,6 +156,8 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByAge(int age)
         {
+            LogIfEnabled("SearchByAge method is called.");
+
             if (age < 1 || age > 200)
             {
                 throw new ArgumentException("Input age is incorrect");
@@ -152,6 +171,8 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> FindMany(Predicate<User> comparer)
         {
+            LogIfEnabled("FindMany method is called.");
+
             if (comparer == null)
             {
                 throw new ArgumentNullException(nameof(comparer));
@@ -170,6 +191,8 @@ namespace UserStorageServices
         /// </summary>
         public User FindFirstByFirstName(string name)
         {
+            LogIfEnabled("FindFirstByFirstName method is called.");
+
             CheckInputName(name);
 
             return _users.First(u => u.FirstName == name);
@@ -180,6 +203,8 @@ namespace UserStorageServices
         /// </summary>
         public User FindFirstByLastName(string name)
         {
+            LogIfEnabled("FindFirstByLastName method is called.");
+
             CheckInputName(name);
 
             return _users.First(u => u.LastName == name);
@@ -190,6 +215,8 @@ namespace UserStorageServices
         /// </summary>
         public User FindFirstByAge(int age)
         {
+            LogIfEnabled("FindFirstByAge method is called.");
+
             if (age < 1 || age > 200)
             {
                 throw new ArgumentException("Input age is incorrect");
@@ -204,6 +231,8 @@ namespace UserStorageServices
         /// </summary>
         public User FindFirst(Predicate<User> comparer)
         {
+            LogIfEnabled("FindFirst method is called.");
+
             if (comparer == null)
             {
                 throw new ArgumentNullException(nameof(comparer));
@@ -225,6 +254,14 @@ namespace UserStorageServices
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Input name is null or empty or whitespace", nameof(name));
+            }
+        }
+
+        private void LogIfEnabled(string s)
+        {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine(s);
             }
         }
 
