@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Abstract;
+using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
 
 namespace UserStorageServices.Concrete
@@ -27,7 +28,7 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Validator of user data.
         /// </summary>
-        private readonly IUserValidator _validator;
+        private readonly IValidator _validator;
 
         /// <summary>
         /// Returns true if logging is enabled.
@@ -41,12 +42,12 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService(IUserIdGenerator idGenerator, IUserValidator validator)
+        public UserStorageService(IUserIdGenerator idGenerator, IValidator validator)
         {
             _users = new HashSet<User>();
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
-            _validator = validator ?? new UserValidator();
+            _validator = validator ?? new CompositeValidator();
         }
 
         /// <summary>

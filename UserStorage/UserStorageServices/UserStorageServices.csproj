@@ -48,9 +48,12 @@
   <ItemGroup>
     <Compile Include="Abstract\IUserIdGenerator.cs" />
     <Compile Include="Abstract\IUserStorageService.cs" />
-    <Compile Include="Abstract\IUserValidator.cs" />
+    <Compile Include="Abstract\IValidator.cs" />
     <Compile Include="Concrete\GuidUserIdGenerator.cs" />
-    <Compile Include="Concrete\UserValidator.cs" />
+    <Compile Include="Concrete\Validators\AgeValidator.cs" />
+    <Compile Include="Concrete\Validators\CompositeValidator.cs" />
+    <Compile Include="Concrete\Validators\FirstNameValidator.cs" />
+    <Compile Include="Concrete\Validators\LastNameValidator.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Concrete\UserStorageService.cs" />

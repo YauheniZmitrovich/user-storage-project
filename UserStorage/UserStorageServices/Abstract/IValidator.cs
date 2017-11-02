@@ -8,12 +8,12 @@ using System.Xml.Schema;
 namespace UserStorageServices.Abstract
 {
     /// <summary>
-    /// Validator of all user data.
+    /// Validator of user data.
     /// </summary>
-    public interface IUserValidator
+    public interface IValidator
     {
         /// <summary>
-        /// Validate all user data
+        /// Validate user data
         /// </summary>
         void Validate(User user);
     }
