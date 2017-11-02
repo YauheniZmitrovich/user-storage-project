@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UserStorageServices.Abstract;
 using UserStorageServices.CustomExceptions;
 
-namespace UserStorageServices
+namespace UserStorageServices.Concrete
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public class UserStorageService
+    public class UserStorageService : IUserStorageService
     {
         #region Fields
 
@@ -17,6 +19,21 @@ namespace UserStorageServices
         /// </summary>
         private readonly HashSet<User> _users;
 
+        /// <summary>
+        /// Generator of user id.
+        /// </summary>
+        private readonly IUserIdGenerator _userIdGenerator;
+
+        /// <summary>
+        /// Validator of user data.
+        /// </summary>
+        private readonly IUserValidator _validator;
+
+        /// <summary>
+        /// Returns true if logging is enabled.
+        /// </summary>
+        private readonly BooleanSwitch _logging = new BooleanSwitch("enableLogging", "Switch in config file");
+
         #endregion
 
         #region Constructors and properties
@@ -24,11 +41,12 @@ namespace UserStorageServices
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService()
+        public UserStorageService(IUserIdGenerator idGenerator, IUserValidator validator)
         {
             _users = new HashSet<User>();
 
-            IsLoggingEnabled = true;
+            _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
+            _validator = validator ?? new UserValidator();
         }
 
         /// <summary>
@@ -36,11 +54,6 @@ namespace UserStorageServices
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
         public int Count => _users.Count;
-
-        /// <summary>
-        /// Returns true if logging is enabled.
-        /// </summary>
-        public bool IsLoggingEnabled { get; set; }
 
         #endregion
 
@@ -56,18 +69,9 @@ namespace UserStorageServices
         {
             LogIfEnabled("Add method is called.");
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
+            _validator.Validate(user);
 
-            CheckInputName(user.FirstName);
-            CheckInputName(user.LastName);
-
-            if (user.Age < 1 || user.Age > 200)
-            {
-                throw new ArgumentException("Age have to be more than zero and less than 200", nameof(user));
-            }
+            user.Id = _userIdGenerator.Generate();
 
             _users.Add(user);
         }
@@ -257,7 +261,7 @@ namespace UserStorageServices
 
         private void LogIfEnabled(string s)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine(s);
             }
