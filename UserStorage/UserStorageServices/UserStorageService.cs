@@ -37,6 +37,8 @@ namespace UserStorageServices
 
         #region Public methods
 
+        #region Add
+
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
         /// </summary>
@@ -48,13 +50,26 @@ namespace UserStorageServices
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (string.IsNullOrWhiteSpace(user.FirstName))
+            CheckInputName(user.FirstName);
+            CheckInputName(user.LastName);
+
+            if (user.Age < 1 || user.Age > 200)
             {
-                throw new ArgumentException("FirstName is null or empty or whitespace", nameof(user));
+                   throw new ArgumentException("Age have to be more than zero and less than 200", nameof(user));
             }
 
-            // TODO: Implement Add() method and all other validation rules.
+            _users.Add(user);
         }
+
+        /// <summary>
+        /// Adds a new <see cref="User"/> to the storage.
+        /// </summary>
+        public void Add(string firstName, string lastName, int age)
+        {
+            Add(new User() { Age = age, FirstName = firstName, LastName = lastName });
+        }
+
+        #endregion
 
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage.
@@ -70,6 +85,18 @@ namespace UserStorageServices
         public void Search()
         {
             // TODO: Implement Search() method.
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void CheckInputName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Input name is null or empty or whitespace", nameof(name));
+            }
         }
 
         #endregion
