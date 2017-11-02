@@ -15,7 +15,7 @@ namespace UserStorageApp
         /// </summary>
         public Client()
         {
-            _userStorageService = new UserStorageService(new GuidUserIdGenerator());
+            _userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
         }
 
         /// <summary>

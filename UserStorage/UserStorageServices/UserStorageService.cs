@@ -24,6 +24,11 @@ namespace UserStorageServices
         /// </summary>
         private readonly IUserIdGenerator _userIdGenerator;
 
+        /// <summary>
+        /// Validator of user data.
+        /// </summary>
+        private readonly IUserValidator _validator;
+
         #endregion
 
         #region Constructors and properties
@@ -31,11 +36,12 @@ namespace UserStorageServices
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService(IUserIdGenerator idGenerator)
+        public UserStorageService(IUserIdGenerator idGenerator, IUserValidator validator)
         {
             _users = new HashSet<User>();
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
+            _validator = validator ?? new UserValidator();
 
             IsLoggingEnabled = true;
         }
