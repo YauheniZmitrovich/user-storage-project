@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UserStorageServices.Abstract;
+using UserStorageServices.Concrete;
 using UserStorageServices.CustomExceptions;
 
 namespace UserStorageServices
@@ -17,6 +19,11 @@ namespace UserStorageServices
         /// </summary>
         private readonly HashSet<User> _users;
 
+        /// <summary>
+        /// Generator of user id.
+        /// </summary>
+        private readonly IUserIdGenerator _userIdGenerator;
+
         #endregion
 
         #region Constructors and properties
@@ -24,9 +31,11 @@ namespace UserStorageServices
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService()
+        public UserStorageService(IUserIdGenerator idGenerator)
         {
             _users = new HashSet<User>();
+
+            _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
 
             IsLoggingEnabled = true;
         }
@@ -68,6 +77,8 @@ namespace UserStorageServices
             {
                 throw new ArgumentException("Age have to be more than zero and less than 200", nameof(user));
             }
+
+            user.Id = _userIdGenerator.Generate();
 
             _users.Add(user);
         }

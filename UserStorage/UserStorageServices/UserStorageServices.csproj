@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IUserIdGenerator.cs" />
+    <Compile Include="Concrete\GuidUserIdGenerator.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserStorageService.cs" />

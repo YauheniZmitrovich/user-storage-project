@@ -1,4 +1,5 @@
 ﻿using UserStorageServices;
+using UserStorageServices.Concrete;
 
 namespace UserStorageApp
 {
@@ -14,7 +15,7 @@ namespace UserStorageApp
         /// </summary>
         public Client()
         {
-            _userStorageService = new UserStorageService();
+            _userStorageService = new UserStorageService(new GuidUserIdGenerator());
         }
 
         /// <summary>
