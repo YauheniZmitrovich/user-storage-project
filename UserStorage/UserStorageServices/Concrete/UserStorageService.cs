@@ -30,11 +30,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         private readonly IUserValidator _validator;
 
-        /// <summary>
-        /// Returns true if logging is enabled.
-        /// </summary>
-        private readonly BooleanSwitch _logging = new BooleanSwitch("enableLogging", "Switch in config file");
-
         #endregion
 
         #region Constructors and properties
@@ -68,8 +63,6 @@ namespace UserStorageServices.Concrete
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
-            LogIfEnabled("Add method is called.");
-
             _validator.Validate(user);
 
             user.Id = _userIdGenerator.Generate();
@@ -94,8 +87,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public void Remove(Guid id)
         {
-            LogIfEnabled("Remove(Guid id) method is called.");
-
             int number = _users.RemoveWhere(x => x.Id == id);
 
             if (number == 0)
@@ -109,8 +100,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public void Remove(User user)
         {
-            LogIfEnabled("Remove(User user) method is called.");
-
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -137,8 +126,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public IEnumerable<User> SearchByFirstName(string name)
         {
-            LogIfEnabled("SearchByFirstName method is called.");
-
             _validator.ValidateFirstName(name);
 
             return Search(u => u.FirstName == name);
@@ -149,8 +136,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public IEnumerable<User> SearchByLastName(string name)
         {
-            LogIfEnabled("SearchByLastName method is called.");
-
             _validator.ValidateLastName(name);
 
             return Search(u => u.LastName == name);
@@ -161,8 +146,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public IEnumerable<User> SearchByAge(int age)
         {
-            LogIfEnabled("SearchByAge method is called.");
-
             _validator.ValidateAge(age);
 
             return Search(u => u.Age == age);
@@ -173,8 +156,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public IEnumerable<User> Search(Predicate<User> comparer)
         {
-            LogIfEnabled("Search method is called.");
-
             if (comparer == null)
             {
                 throw new ArgumentNullException(nameof(comparer));
@@ -192,8 +173,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public User FindFirstByFirstName(string name)
         {
-            LogIfEnabled("FindFirstByFirstName method is called.");
-
             _validator.ValidateFirstName(name);
 
             return FindFirst(u => u.FirstName == name);
@@ -204,8 +183,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public User FindFirstByLastName(string name)
         {
-            LogIfEnabled("FindFirstByLastName method is called.");
-
             _validator.ValidateLastName(name);
 
             return FindFirst(u => u.LastName == name);
@@ -216,8 +193,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public User FindFirstByAge(int age)
         {
-            LogIfEnabled("FindFirstByAge method is called.");
-
             _validator.ValidateAge(age);
 
             return FindFirst(u => u.Age == age);
@@ -228,8 +203,6 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public User FindFirst(Predicate<User> comparer)
         {
-            LogIfEnabled("FindFirst method is called.");
-
             if (comparer == null)
             {
                 throw new ArgumentNullException(nameof(comparer));
@@ -241,26 +214,6 @@ namespace UserStorageServices.Concrete
         #endregion
 
         #endregion
-
-        #endregion
-
-        #region Private methods
-
-        private void CheckInputName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Input name is null or empty or whitespace", nameof(name));
-            }
-        }
-
-        private void LogIfEnabled(string s)
-        {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine(s);
-            }
-        }
 
         #endregion
     }
