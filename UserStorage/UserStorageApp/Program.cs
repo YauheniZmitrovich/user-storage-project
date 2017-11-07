@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.ServiceModel;
+using UserStorageServices.Concrete;
+using UserStorageServices.Concrete.Validators;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
 
 namespace UserStorageApp
@@ -11,24 +13,25 @@ namespace UserStorageApp
     {
         public static void Main(string[] args)
         {
-            /* Loading configuration from the application configuration file.This configuration is not used yet.//TODO:
-           var serviceConfiguration = (ServiceConfiguration)System.Configuration.ConfigurationManager.GetSection("serviceConfiguration");
+            // Loading configuration from the application configuration file.This configuration is not used yet.
+            var serviceConfiguration = (ServiceConfiguration)System.Configuration.ConfigurationManager.GetSection("serviceConfiguration");
 
-             using (var host = new ServiceHost(MyDiagnostics.Create(serviceConfiguration)))
-             {
-                 host.SmartOpen();
+            using (var host = new ServiceHost(MyDiagnostics.Create(serviceConfiguration)))
+            {
+                host.SmartOpen();
 
-                 var client = new Client();
+                var storage = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+                var storageLog = new UserStorageServiceLog(storage);
+                var client = new Client(storageLog);
 
-                 client.Run();
+                client.Run();
 
-                 Console.WriteLine("Service \"{0}\" that is implemented by \"{1}\" class is available on \"{2}\" endpoint.", host.Description.Name, host.Description.ServiceType.FullName, host.BaseAddresses.First());
-                 Console.WriteLine("Press <Enter> to stop the service.");
-                 Console.ReadLine();
+                Console.WriteLine("Service \"{0}\" that is implemented by \"{1}\" class is available on \"{2}\" endpoint.", host.Description.Name, host.Description.ServiceType.FullName, host.BaseAddresses.First());
+                Console.WriteLine("Press <Enter> to stop the service.");
+                Console.ReadLine();
 
-                 host.Close();
-             }
-             */
+                host.Close();
+            }
         }
     }
 }

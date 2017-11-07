@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace UserStorageServices.Abstract
 {
-    /// <summary>
-    /// Validator of all user data.
-    /// </summary>
     public interface IUserValidator
     {
         /// <summary>
-        /// Validate all user data
+        /// Validate all user data.
         /// </summary>
         void Validate(User user);
+
+        /// <summary>
+        /// Validate user first name.
+        /// </summary>
+        void ValidateFirstName(string name);
+
+        /// <summary>
+        /// Validate user last name.
+        /// </summary>
+        void ValidateLastName(string name);
+
+        /// <summary>
+        /// Validate user age.
+        /// </summary>
+        void ValidateAge(int age);
     }
 }

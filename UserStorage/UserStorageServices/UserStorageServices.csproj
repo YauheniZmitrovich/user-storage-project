@@ -49,8 +49,13 @@
     <Compile Include="Abstract\IUserIdGenerator.cs" />
     <Compile Include="Abstract\IUserStorageService.cs" />
     <Compile Include="Abstract\IUserValidator.cs" />
+    <Compile Include="Concrete\UserStorageServiceLog.cs" />
     <Compile Include="Concrete\GuidUserIdGenerator.cs" />
-    <Compile Include="Concrete\UserValidator.cs" />
+    <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
+    <Compile Include="Concrete\Validators\UserValidator.cs" />
+    <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
+    <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />
+    <Compile Include="CustomExceptions\LastNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Concrete\UserStorageService.cs" />
