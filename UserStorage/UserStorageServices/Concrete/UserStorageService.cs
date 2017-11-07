@@ -28,7 +28,7 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Validator of user data.
         /// </summary>
-        private readonly IValidator _validator;
+        private readonly IUserValidator _validator;
 
         /// <summary>
         /// Returns true if logging is enabled.
@@ -42,12 +42,12 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService(IUserIdGenerator idGenerator, IValidator validator)
+        public UserStorageService(IUserIdGenerator idGenerator, IUserValidator validator)
         {
             _users = new HashSet<User>();
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
-            _validator = validator ?? new CompositeValidator();
+            _validator = validator ?? new UserValidator();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace UserStorageServices.Concrete
             }
             catch (UserNotFoundException exc)
             {
-                throw new UserNotFoundException(exc.Message, user); // TODO:is it the right way
+                throw new UserNotFoundException(exc.Message, user);
             }
         }
 
@@ -139,7 +139,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("SearchByFirstName method is called.");
 
-            CheckInputName(name);
+            _validator.ValidateFirstName(name);
 
             return Search(u => u.FirstName == name);
         }
@@ -151,7 +151,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("SearchByLastName method is called.");
 
-            CheckInputName(name);
+            _validator.ValidateLastName(name);
 
             return Search(u => u.LastName == name);
         }
@@ -163,10 +163,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("SearchByAge method is called.");
 
-            if (age < 1 || age > 200)
-            {
-                throw new AgeExceedsLimitsException("Input age is incorrect");
-            }
+            _validator.ValidateAge(age);
 
             return Search(u => u.Age == age);
         }
@@ -197,7 +194,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("FindFirstByFirstName method is called.");
 
-            CheckInputName(name);
+            _validator.ValidateFirstName(name);
 
             return FindFirst(u => u.FirstName == name);
         }
@@ -209,7 +206,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("FindFirstByLastName method is called.");
 
-            CheckInputName(name);
+            _validator.ValidateLastName(name);
 
             return FindFirst(u => u.LastName == name);
         }
@@ -221,10 +218,7 @@ namespace UserStorageServices.Concrete
         {
             LogIfEnabled("FindFirstByAge method is called.");
 
-            if (age < 1 || age > 200)
-            {
-                throw new AgeExceedsLimitsException("Age have to be more than zero and less than 200");
-            }
+            _validator.ValidateAge(age);
 
             return FindFirst(u => u.Age == age);
         }
