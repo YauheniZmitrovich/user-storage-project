@@ -196,7 +196,9 @@ namespace UserStorageServices.Concrete
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine(s);
+                Trace.TraceInformation(s);
+
+                Trace.Flush();
             }
         }
 
