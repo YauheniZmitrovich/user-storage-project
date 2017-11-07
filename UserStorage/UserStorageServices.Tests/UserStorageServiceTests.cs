@@ -205,6 +205,8 @@ namespace UserStorageServices.Tests
 
         #region Returns first user
 
+        #region By concrete condition
+
         [TestMethod]
         public void FindFirstByFirstName_AllOk()
         {
@@ -273,6 +275,98 @@ namespace UserStorageServices.Tests
             Assert.AreEqual(user.FirstName, result.FirstName);
             Assert.AreEqual(user.LastName, result.LastName);
         }
+
+        #endregion
+
+        #region Composite 
+
+        [TestMethod]
+        public void FindFirst_SearchByFirstNameAndLastName_ReturnUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Petya",
+                LastName = "Sidorov"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            var resUser = userStorageService.FindFirst(u => u.FirstName == "Petya" && u.LastName == "Sidorov");
+
+            // Assert 
+            Assert.AreEqual(user, resUser);
+        }
+
+        [TestMethod]
+        public void FindFirst_SearchByFirstNameAndAge_ReturnUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Petya",
+                LastName = "Sidorov"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            var resUser = userStorageService.FindFirst(u => u.FirstName == "Petya" && u.Age == 27);
+
+            // Assert 
+            Assert.AreEqual(user, resUser);
+        }
+
+        [TestMethod]
+        public void FindFirst_SearchByLastNameAndAge_ReturnUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Petya",
+                LastName = "Sidorov"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            var resUser = userStorageService.FindFirst(u => u.Age == 27 && u.LastName == "Sidorov");
+
+            // Assert 
+            Assert.AreEqual(user, resUser);
+        }
+
+
+        [TestMethod]
+        public void FindFirst_SearchByFirstNameAndLastNameAndAge_ReturnUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Petya",
+                LastName = "Sidorov"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            var resUser = userStorageService.FindFirst
+                (u => u.FirstName == "Petya" && u.LastName == "Sidorov" && u.Age == 27);
+
+            // Assert 
+            Assert.AreEqual(user, resUser);
+        }
+
+        #endregion
 
         #endregion
 
