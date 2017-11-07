@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserStorageServices.Abstract;
+using UserStorageServices.CustomExceptions;
 
 namespace UserStorageServices.Concrete.Validators
 {
@@ -19,7 +20,7 @@ namespace UserStorageServices.Concrete.Validators
         {
             if (string.IsNullOrWhiteSpace(user.FirstName))
             {
-                throw new ArgumentException("Firstname is null or empty or whitespace", nameof(user.FirstName));
+                throw new FirstNameIsNullOrEmptyException("Firstname is null or empty or whitespace");
             }
         }
     }

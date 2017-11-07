@@ -58,7 +58,7 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(FirstNameIsNullOrEmptyException))]
         public void Add_UserFirstNameIsNull_ExceptionThrown()
         {
             // Arrange
@@ -74,7 +74,7 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(LastNameIsNullOrEmptyException))]
         public void Add_UserLastNameIsNull_ExceptionThrown()
         {
             // Arrange
@@ -83,14 +83,16 @@ namespace UserStorageServices.Tests
             // Act
             userStorageService.Add(new User
             {
-                LastName = null
+                FirstName = "Vasya",
+                LastName = null,
+                Age = 25
             });
 
             // Assert - [ExpectedException]
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(AgeExceedsLimitsException))]
         public void Add_UserAgeMoreThanTwoHundred_ExceptionThrown()
         {
             // Arrange
@@ -99,6 +101,8 @@ namespace UserStorageServices.Tests
             // Act
             userStorageService.Add(new User
             {
+                FirstName = "Kostya",
+                LastName = "Petrov",
                 Age = 201
             });
 
@@ -106,7 +110,7 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(AgeExceedsLimitsException))]
         public void Add_UserAgeLessThanZero_ExceptionThrown()
         {
             // Arrange
@@ -115,6 +119,8 @@ namespace UserStorageServices.Tests
             // Act
             userStorageService.Add(new User
             {
+                FirstName = "Kostya",
+                LastName = "Petrov",
                 Age = 0
             });
 
@@ -355,7 +361,7 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(AgeExceedsLimitsException))]
         public void SearchByAge_AgeMoreThanTwoHundred_ExceptionThrow()
         {
             // Arrange
@@ -368,7 +374,7 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(AgeExceedsLimitsException))]
         public void SearchByAge_AgeIsLessThanOne_ExceptionThrow()
         {
             // Arrange

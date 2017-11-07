@@ -54,6 +54,9 @@
     <Compile Include="Concrete\Validators\CompositeValidator.cs" />
     <Compile Include="Concrete\Validators\FirstNameValidator.cs" />
     <Compile Include="Concrete\Validators\LastNameValidator.cs" />
+    <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
+    <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />
+    <Compile Include="CustomExceptions\LastNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Concrete\UserStorageService.cs" />

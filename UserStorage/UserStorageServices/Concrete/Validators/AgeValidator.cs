@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserStorageServices.Abstract;
+using UserStorageServices.CustomExceptions;
 
 namespace UserStorageServices.Concrete.Validators
 {
@@ -19,7 +20,7 @@ namespace UserStorageServices.Concrete.Validators
         {
             if (user.Age < 1 || user.Age > 200)
             {
-                throw new ArgumentException("Age have to be more than zero and less than 200", nameof(user));
+                throw new AgeExceedsLimitsException("Age have to be more than zero and less than 200");
             }
         }
     }

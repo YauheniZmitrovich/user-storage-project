@@ -165,7 +165,7 @@ namespace UserStorageServices.Concrete
 
             if (age < 1 || age > 200)
             {
-                throw new ArgumentException("Input age is incorrect");
+                throw new AgeExceedsLimitsException("Input age is incorrect");
             }
 
             return Search(u => u.Age == age);
@@ -223,7 +223,7 @@ namespace UserStorageServices.Concrete
 
             if (age < 1 || age > 200)
             {
-                throw new ArgumentException("Input age is incorrect");
+                throw new AgeExceedsLimitsException("Age have to be more than zero and less than 200");
             }
 
             return FindFirst(u => u.Age == age);

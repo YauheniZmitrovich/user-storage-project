@@ -15,7 +15,7 @@ namespace UserStorageServices.Concrete.Validators
         private readonly IValidator[] _validators;
 
         /// <summary>
-        /// Create instance of <see cref="CompositeValidator"/>
+        /// Create instance of <see cref="CompositeValidator"/>.
         /// </summary>
         public CompositeValidator()
         {
@@ -28,7 +28,7 @@ namespace UserStorageServices.Concrete.Validators
         }
 
         /// <summary>
-        /// Validate all user data
+        /// Validate all user data.
         /// </summary>
         public void Validate(User user)
         {
