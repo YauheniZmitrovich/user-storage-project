@@ -343,7 +343,6 @@ namespace UserStorageServices.Tests
             Assert.AreEqual(user, resUser);
         }
 
-
         [TestMethod]
         public void FindFirst_SearchByFirstNameAndLastNameAndAge_ReturnUser()
         {
@@ -359,8 +358,8 @@ namespace UserStorageServices.Tests
             userStorageService.Add(user);
 
             // Act
-            var resUser = userStorageService.FindFirst
-                (u => u.FirstName == "Petya" && u.LastName == "Sidorov" && u.Age == 27);
+            var resUser =
+                userStorageService.FindFirst(u => u.FirstName == "Petya" && u.LastName == "Sidorov" && u.Age == 27);
 
             // Assert 
             Assert.AreEqual(user, resUser);
