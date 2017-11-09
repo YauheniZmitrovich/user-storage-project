@@ -5,6 +5,7 @@ using System.Linq;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Concrete
 {
@@ -30,6 +31,16 @@ namespace UserStorageServices.Concrete
         /// </summary>
         private readonly IUserValidator _validator;
 
+        /// <summary>
+        /// Services with slave mode.
+        /// </summary>
+        private readonly IList<IUserStorageService> _slaveServices;
+
+        /// <summary>
+        /// Mode of <see cref="UserStorageService"/> work. 
+        /// </summary>
+        private readonly UserStorageServiceMode _mode;
+
         #endregion
 
         #region Constructors and properties
@@ -37,12 +48,23 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>. 
         /// </summary>
-        public UserStorageService(IUserIdGenerator idGenerator, IUserValidator validator)
+        public UserStorageService(
+            IUserIdGenerator idGenerator = null,
+            IUserValidator validator = null,
+            UserStorageServiceMode mode = UserStorageServiceMode.MasterNode,
+            IEnumerable<IUserStorageService> slaveServices = null)
         {
             _users = new HashSet<User>();
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
             _validator = validator ?? new UserValidator();
+
+            _mode = mode;
+
+            if (mode == UserStorageServiceMode.MasterNode)
+            {
+                _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
+            }
         }
 
         /// <summary>
@@ -63,11 +85,20 @@ namespace UserStorageServices.Concrete
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
+            if (!IsAvailable())
+            {
+                throw new NotSupportedException();
+            }
+
             _validator.Validate(user);
 
             user.Id = _userIdGenerator.Generate();
-
             _users.Add(user);
+
+            foreach (var service in _slaveServices)
+            {
+                service.Add(user);
+            }
         }
 
         /// <summary>
@@ -87,11 +118,20 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public void Remove(Guid id)
         {
-            int number = _users.RemoveWhere(x => x.Id == id);
+            if (!IsAvailable())
+            {
+                throw new NotSupportedException();
+            }
 
+            int number = _users.RemoveWhere(x => x.Id == id);
             if (number == 0)
             {
                 throw new UserNotFoundException("The user was not found");
+            }
+
+            foreach (var service in _slaveServices)
+            {
+                service.Remove(id);
             }
         }
 
@@ -214,6 +254,26 @@ namespace UserStorageServices.Concrete
         #endregion
 
         #endregion
+
+        #endregion
+
+        #region Private methods
+
+        private bool IsAvailable()
+        {
+            if (_mode == UserStorageServiceMode.MasterNode)
+            {
+                return true;
+            }
+
+            var stackTrace = new StackTrace();
+            var currentCalled = stackTrace.GetFrame(1).GetMethod();
+            var flag = (stackTrace.GetFrames() ?? throw new InvalidOperationException())
+                .Select(x => x.GetMethod())
+                .Count(x => x == currentCalled);
+
+            return flag >= 2;
+        }
 
         #endregion
     }

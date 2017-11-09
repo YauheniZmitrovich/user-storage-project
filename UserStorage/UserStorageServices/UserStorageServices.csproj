@@ -57,6 +57,7 @@
     <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\LastNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
+    <Compile Include="Enums\UserStorageServiceMode.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Concrete\UserStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
