@@ -41,6 +41,11 @@ namespace UserStorageServices.Concrete
         /// </summary>
         private readonly UserStorageServiceMode _mode;
 
+        /// <summary>
+        /// Collection of subcribers.
+        /// </summary>
+        private readonly IList<INotificationSubscriber> _subscribers;
+
         #endregion
 
         #region Constructors and properties
@@ -60,11 +65,12 @@ namespace UserStorageServices.Concrete
             _validator = validator ?? new UserValidator();
 
             _mode = mode;
-
             if (mode == UserStorageServiceMode.MasterNode)
             {
                 _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
             }
+
+            _subscribers = new List<INotificationSubscriber>();
         }
 
         /// <summary>
@@ -94,6 +100,11 @@ namespace UserStorageServices.Concrete
 
             user.Id = _userIdGenerator.Generate();
             _users.Add(user);
+
+            foreach (var ob in _subscribers)
+            {
+                ob.UserAdded(user);
+            }
 
             foreach (var service in _slaveServices)
             {
@@ -127,6 +138,11 @@ namespace UserStorageServices.Concrete
             if (number == 0)
             {
                 throw new UserNotFoundException("The user was not found");
+            }
+
+            foreach (var ob in _subscribers)
+            {
+                ob.UserRemoved(_users.First(x => x.Id == id));
             }
 
             foreach (var service in _slaveServices)
@@ -252,6 +268,20 @@ namespace UserStorageServices.Concrete
         }
 
         #endregion
+
+        #endregion
+
+        #region Subscriber magement
+
+        public void AddSubscriber(INotificationSubscriber subscriber)
+        {
+            _subscribers.Add(subscriber);
+        }
+
+        public void RemoveSubscriber(INotificationSubscriber subscriber)
+        {
+            _subscribers.Remove(subscriber);
+        }
 
         #endregion
 
