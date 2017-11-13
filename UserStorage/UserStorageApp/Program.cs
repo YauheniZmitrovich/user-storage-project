@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete;
+using UserStorageServices.Concrete.Services;
 using UserStorageServices.Concrete.Validators;
 using UserStorageServices.Enums;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;

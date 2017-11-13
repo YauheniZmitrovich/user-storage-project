@@ -4,7 +4,7 @@ using System.Linq;
 using UserStorageServices.Abstract;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Concrete.Services
 {
     public sealed class UserStorageServiceMaster : UserStorageServiceBase
     {

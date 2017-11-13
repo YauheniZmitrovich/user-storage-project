@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserStorageServices.Abstract;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Concrete.Services
 {
     /// <summary>
     /// Implementation of <see cref="UserStorageServiceDecorator"/>. Log all method calls.
