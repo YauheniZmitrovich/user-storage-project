@@ -41,8 +41,7 @@ namespace UserStorageServices.Abstract
         /// </summary>
         protected UserStorageServiceBase(
             IUserIdGenerator idGenerator = null,
-            IUserValidator validator = null
-            )
+            IUserValidator validator = null)
         {
             Users = new HashSet<User>();
 

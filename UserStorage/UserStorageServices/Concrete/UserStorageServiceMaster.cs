@@ -22,14 +22,6 @@ namespace UserStorageServices.Concrete
 
         #endregion
 
-        #region Events
-
-        private event Action<User> UserAdded;
-
-        private event Action<User> UserRemoved;
-
-        #endregion
-
         #region Constructors 
 
         /// <summary>
@@ -45,6 +37,14 @@ namespace UserStorageServices.Concrete
 
             _subscribers = new List<INotificationSubscriber>();
         }
+
+        #endregion
+
+        #region Events
+
+        private event Action<User> UserAdded;
+
+        private event Action<User> UserRemoved;
 
         #endregion
 
