@@ -9,7 +9,7 @@ using UserStorageServices.Enums;
 
 namespace UserStorageServices.Concrete
 {
-    public class UserStorageServiceSlave : UserStorageServiceBase
+    public sealed class UserStorageServiceSlave : UserStorageServiceBase
     {
         #region Constructors and properties
 

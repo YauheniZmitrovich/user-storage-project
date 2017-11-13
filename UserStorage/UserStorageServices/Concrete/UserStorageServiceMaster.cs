@@ -6,7 +6,7 @@ using UserStorageServices.Enums;
 
 namespace UserStorageServices.Concrete
 {
-    public class UserStorageServiceMaster : UserStorageServiceBase
+    public sealed class UserStorageServiceMaster : UserStorageServiceBase
     {
         #region Fields
 
@@ -22,7 +22,15 @@ namespace UserStorageServices.Concrete
 
         #endregion
 
-        #region Constructors and properties
+        #region Events
+
+        private event Action<User> UserAdded;
+
+        private event Action<User> UserRemoved;
+
+        #endregion
+
+        #region Constructors 
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceMaster"/>. 
@@ -37,6 +45,10 @@ namespace UserStorageServices.Concrete
 
             _subscribers = new List<INotificationSubscriber>();
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Mode of <see cref="UserStorageServiceMaster"/> work. 
@@ -66,6 +78,8 @@ namespace UserStorageServices.Concrete
             {
                 service.Add(user);
             }
+
+            OnUserAdded(user);
         }
 
         #endregion
@@ -77,6 +91,8 @@ namespace UserStorageServices.Concrete
         /// </summary>
         public override void Remove(Guid id)
         {
+            OnUserRemoved(FindFirst(x => x.Id == id));
+
             base.Remove(id);
 
             foreach (var ob in _subscribers)
@@ -100,7 +116,10 @@ namespace UserStorageServices.Concrete
             {
                 throw new ArgumentNullException(nameof(subscriber));
             }
+
             _subscribers.Add(subscriber);
+            UserAdded += subscriber.UserAdded;
+            UserRemoved += subscriber.UserRemoved;
         }
 
         public void RemoveSubscriber(INotificationSubscriber subscriber)
@@ -109,10 +128,27 @@ namespace UserStorageServices.Concrete
             {
                 throw new ArgumentNullException(nameof(subscriber));
             }
+
             _subscribers.Remove(subscriber);
+            UserAdded -= subscriber.UserAdded;
+            UserRemoved -= subscriber.UserRemoved;
         }
 
         #endregion
+
+        #endregion
+
+        #region Private methods
+
+        private void OnUserAdded(User user)
+        {
+            UserAdded?.Invoke(user);
+        }
+
+        private void OnUserRemoved(User user)
+        {
+            UserRemoved?.Invoke(user);
+        }
 
         #endregion
     }

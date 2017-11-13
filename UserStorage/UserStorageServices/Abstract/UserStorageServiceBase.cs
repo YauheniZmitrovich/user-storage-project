@@ -218,7 +218,7 @@ namespace UserStorageServices.Abstract
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return Users.First(u => comparer(u));
+            return Users.FirstOrDefault(u => comparer(u));
         }
 
         #endregion
