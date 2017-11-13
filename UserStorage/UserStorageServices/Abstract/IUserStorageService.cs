@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Abstract
 {
@@ -18,6 +19,11 @@ namespace UserStorageServices.Abstract
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
         int Count { get; }
+
+        /// <summary>
+        /// Mode of <see cref="IUserStorageService"/> work. 
+        /// </summary>
+        UserStorageServiceMode Mode { get; }
 
         #endregion
 

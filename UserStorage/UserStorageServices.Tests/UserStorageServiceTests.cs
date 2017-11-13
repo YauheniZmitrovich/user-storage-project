@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UserStorageServices.Abstract;
 using UserStorageServices.Concrete;
 using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Tests
 {
@@ -18,7 +20,7 @@ namespace UserStorageServices.Tests
         public void Add_UserParamAllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
@@ -31,7 +33,7 @@ namespace UserStorageServices.Tests
         public void Add_ThreeParamsAllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(age: 5, lastName: "Petrov", firstName: "Vasya");
@@ -49,7 +51,7 @@ namespace UserStorageServices.Tests
         public void Add_NullAsUserArgument_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(null);
@@ -62,7 +64,7 @@ namespace UserStorageServices.Tests
         public void Add_UserFirstNameIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(new User
@@ -78,7 +80,7 @@ namespace UserStorageServices.Tests
         public void Add_UserLastNameIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(new User
@@ -96,7 +98,7 @@ namespace UserStorageServices.Tests
         public void Add_UserAgeMoreThanTwoHundred_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(new User
@@ -114,7 +116,7 @@ namespace UserStorageServices.Tests
         public void Add_UserAgeLessThanZero_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Add(new User
@@ -139,7 +141,7 @@ namespace UserStorageServices.Tests
         public void Remove_ById_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             var vasya = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
@@ -154,7 +156,7 @@ namespace UserStorageServices.Tests
         public void Remove_ByUserOb_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             var vasya = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
@@ -174,7 +176,7 @@ namespace UserStorageServices.Tests
         public void Remove_NullAsUserArgument_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Remove(null);
@@ -187,7 +189,7 @@ namespace UserStorageServices.Tests
         public void Remove_UserNotFound_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.Remove(new User() { FirstName = "Vasya" });
@@ -211,7 +213,7 @@ namespace UserStorageServices.Tests
         public void FindFirstByFirstName_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -234,7 +236,7 @@ namespace UserStorageServices.Tests
         public void FindFirstByLastName_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -257,7 +259,7 @@ namespace UserStorageServices.Tests
         public void FindFirstByAge_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -284,7 +286,7 @@ namespace UserStorageServices.Tests
         public void FindFirst_SearchByFirstNameAndLastName_ReturnUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -305,7 +307,7 @@ namespace UserStorageServices.Tests
         public void FindFirst_SearchByFirstNameAndAge_ReturnUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -326,7 +328,7 @@ namespace UserStorageServices.Tests
         public void FindFirst_SearchByLastNameAndAge_ReturnUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -347,7 +349,7 @@ namespace UserStorageServices.Tests
         public void FindFirst_SearchByFirstNameAndLastNameAndAge_ReturnUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             var user = new User()
             {
@@ -375,7 +377,7 @@ namespace UserStorageServices.Tests
         public void SearchByFirstName_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
             var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
 
             userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
@@ -392,7 +394,7 @@ namespace UserStorageServices.Tests
         public void SearchByLastName_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
             var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
 
             userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
@@ -409,7 +411,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_AllOk()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
             var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
 
             userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
@@ -432,7 +434,7 @@ namespace UserStorageServices.Tests
         public void FindFirstByFirstName_EmptyName_ExceptionThrow()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.FindFirstByFirstName(string.Empty);
@@ -445,7 +447,7 @@ namespace UserStorageServices.Tests
         public void FindFirstByLastName_WhiteSpace_ExceptionThrow()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.FindFirstByLastName(" ");
@@ -458,7 +460,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_AgeMoreThanTwoHundred_ExceptionThrow()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.SearchByAge(253);
@@ -471,7 +473,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_AgeIsLessThanOne_ExceptionThrow()
         {
             // Arrange
-            var userStorageService = new UserStorageService(new GuidUserIdGenerator(), new UserValidator());
+            var userStorageService = new UserStorageServiceMaster(new GuidUserIdGenerator(), new UserValidator());
 
             // Act
             userStorageService.SearchByAge(0);
@@ -480,6 +482,96 @@ namespace UserStorageServices.Tests
         }
 
         #endregion
+
+        #endregion
+
+        #region Master and slave modes
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void Add_Slave_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageServiceSlave();
+
+            // Act
+            userStorageService.Add(new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 25
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void Remove_Slave_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageServiceSlave();
+
+            // Act
+            userStorageService.Remove(new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 20
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void Add_Master_AllAdded()
+        {
+            // Arrange
+            var person = new User
+            {
+                FirstName = "Justin",
+                LastName = "Petrov",
+                Age = 21
+            };
+
+            var slave1 = new UserStorageServiceLog(new UserStorageServiceSlave());
+            var slave2 = new UserStorageServiceSlave();
+
+            var master = new UserStorageServiceLog(
+                new UserStorageServiceMaster(slaveServices: new IUserStorageService[] { slave1, slave2 }));
+
+            // Act
+            master.Add(person);
+
+            // Assert
+            Assert.IsTrue(master.Count == 1 && slave1.Count == 1 && slave2.Count == 1);
+        }
+
+        [TestMethod]
+        public void Remove_Master_AllRemoved()
+        {
+            // Arrange
+            var person = new User
+            {
+                FirstName = "Justin",
+                LastName = "Petrov",
+                Age = 21
+            };
+
+            var slave1 = new UserStorageServiceLog(new UserStorageServiceSlave());
+            var slave2 = new UserStorageServiceSlave();
+
+            var master = new UserStorageServiceLog(
+                new UserStorageServiceMaster(slaveServices: new IUserStorageService[] { slave1, slave2 }));
+
+            // Act
+            master.Add(person);
+
+            master.Remove(person);
+
+            // Assert
+            Assert.IsTrue(master.Count == 0 && slave1.Count == 0 && slave2.Count == 0);
+        }
 
         #endregion
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserStorageServices.Abstract;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Concrete
 {
@@ -37,9 +38,22 @@ namespace UserStorageServices.Concrete
         {
             get
             {
-                LogIfEnabled("Count() method is called.");
+                LogIfEnabled("Count property is called.");
 
                 return StorageService.Count;
+            }
+        }
+
+        /// <summary>
+        /// Mode of <see cref="UserStorageServiceMaster"/> work. 
+        /// </summary>
+        public override UserStorageServiceMode Mode
+        {
+            get
+            {
+                LogIfEnabled("Mode property is called");
+
+                return StorageService.Mode;
             }
         }
 

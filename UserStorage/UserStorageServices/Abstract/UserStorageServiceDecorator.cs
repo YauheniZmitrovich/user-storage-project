@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Abstract
 {
@@ -16,6 +17,8 @@ namespace UserStorageServices.Abstract
         }
 
         public abstract int Count { get; }
+
+        public abstract UserStorageServiceMode Mode { get; }
 
         public abstract void Add(User user);
 
