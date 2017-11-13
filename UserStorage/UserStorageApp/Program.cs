@@ -23,11 +23,11 @@ namespace UserStorageApp
             {
                 host.SmartOpen();
 
-                var slaveNode1 = new UserStorageService(mode: UserStorageServiceMode.SlaveNode);
-                var slaveNode2 = new UserStorageService(mode: UserStorageServiceMode.SlaveNode);
+                var slaveNode1 = new UserStorageServiceSlave();
+                var slaveNode2 = new UserStorageServiceSlave();
                 var slaveCollection = new List<IUserStorageService>() { slaveNode1, slaveNode2 };
 
-                var storage = new UserStorageService(slaveServices: slaveCollection);
+                var storage = new UserStorageServiceMaster(slaveServices: slaveCollection);
                 var storageLog = new UserStorageServiceLog(storage);
                 var client = new Client(storageLog);
 

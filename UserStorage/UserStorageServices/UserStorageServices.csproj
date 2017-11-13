@@ -50,9 +50,11 @@
     <Compile Include="Abstract\IUserIdGenerator.cs" />
     <Compile Include="Abstract\IUserStorageService.cs" />
     <Compile Include="Abstract\IUserValidator.cs" />
+    <Compile Include="Concrete\UserStorageServiceMaster.cs" />
     <Compile Include="Concrete\UserStorageServiceLog.cs" />
     <Compile Include="Concrete\GuidUserIdGenerator.cs" />
     <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
+    <Compile Include="Concrete\UserStorageServiceSlave.cs" />
     <Compile Include="Concrete\Validators\UserValidator.cs" />
     <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
     <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />
@@ -60,7 +62,7 @@
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="Enums\UserStorageServiceMode.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Concrete\UserStorageService.cs" />
+    <Compile Include="Abstract\UserStorageServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

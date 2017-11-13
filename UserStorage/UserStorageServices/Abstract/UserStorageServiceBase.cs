@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Abstract;
+using UserStorageServices.Concrete;
 using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Abstract
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public class UserStorageService : IUserStorageService
+    public abstract class UserStorageServiceBase : IUserStorageService
     {
         #region Fields
 
         /// <summary>
         /// Container for users.
         /// </summary>
-        private readonly HashSet<User> _users;
+        protected readonly HashSet<User> Users;
 
         /// <summary>
         /// Generator of user id.
@@ -31,53 +32,34 @@ namespace UserStorageServices.Concrete
         /// </summary>
         private readonly IUserValidator _validator;
 
-        /// <summary>
-        /// Services with slave mode.
-        /// </summary>
-        private readonly IList<IUserStorageService> _slaveServices;
-
-        /// <summary>
-        /// Mode of <see cref="UserStorageService"/> work. 
-        /// </summary>
-        private readonly UserStorageServiceMode _mode;
-
-        /// <summary>
-        /// Collection of subcribers.
-        /// </summary>
-        private readonly IList<INotificationSubscriber> _subscribers;
-
         #endregion
 
         #region Constructors and properties
 
         /// <summary>
-        /// Create an instance of <see cref="UserStorageService"/>. 
+        /// Create an instance of <see cref="UserStorageServiceBase"/>. 
         /// </summary>
-        public UserStorageService(
+        protected UserStorageServiceBase(
             IUserIdGenerator idGenerator = null,
-            IUserValidator validator = null,
-            UserStorageServiceMode mode = UserStorageServiceMode.MasterNode,
-            IEnumerable<IUserStorageService> slaveServices = null)
+            IUserValidator validator = null
+            )
         {
-            _users = new HashSet<User>();
+            Users = new HashSet<User>();
 
             _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
             _validator = validator ?? new UserValidator();
-
-            _mode = mode;
-            if (mode == UserStorageServiceMode.MasterNode)
-            {
-                _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
-            }
-
-            _subscribers = new List<INotificationSubscriber>();
         }
 
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count => _users.Count;
+        public int Count => Users.Count;
+
+        /// <summary>
+        /// Mode of <see cref="UserStorageServiceBase"/> work. 
+        /// </summary>
+        public abstract UserStorageServiceMode Mode { get; }
 
         #endregion
 
@@ -89,33 +71,19 @@ namespace UserStorageServices.Concrete
         /// Adds a new <see cref="User"/> to the storage.
         /// </summary>
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
-        public void Add(User user)
+        public virtual void Add(User user)
         {
-            if (!IsAvailable())
-            {
-                throw new NotSupportedException();
-            }
-
             _validator.Validate(user);
 
             user.Id = _userIdGenerator.Generate();
-            _users.Add(user);
 
-            foreach (var ob in _subscribers)
-            {
-                ob.UserAdded(user);
-            }
-
-            foreach (var service in _slaveServices)
-            {
-                service.Add(user);
-            }
+            Users.Add(user);
         }
 
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
         /// </summary>
-        public void Add(string firstName, string lastName, int age)
+        public virtual void Add(string firstName, string lastName, int age)
         {
             Add(new User() { Age = age, FirstName = firstName, LastName = lastName });
         }
@@ -127,34 +95,20 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public void Remove(Guid id)
+        public virtual void Remove(Guid id)
         {
-            if (!IsAvailable())
-            {
-                throw new NotSupportedException();
-            }
+            int number = Users.RemoveWhere(x => x.Id == id);
 
-            int number = _users.RemoveWhere(x => x.Id == id);
             if (number == 0)
             {
                 throw new UserNotFoundException("The user was not found");
-            }
-
-            foreach (var ob in _subscribers)
-            {
-                ob.UserRemoved(_users.First(x => x.Id == id));
-            }
-
-            foreach (var service in _slaveServices)
-            {
-                service.Remove(id);
             }
         }
 
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage.
         /// </summary>
-        public void Remove(User user)
+        public virtual void Remove(User user)
         {
             if (user == null)
             {
@@ -217,7 +171,7 @@ namespace UserStorageServices.Concrete
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return _users.Select(u => u).Where(u => comparer(u));
+            return Users.Select(u => u).Where(u => comparer(u));
         }
 
         #endregion
@@ -264,46 +218,12 @@ namespace UserStorageServices.Concrete
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return _users.First(u => comparer(u));
+            return Users.First(u => comparer(u));
         }
 
         #endregion
 
         #endregion
-
-        #region Subscriber magement
-
-        public void AddSubscriber(INotificationSubscriber subscriber)
-        {
-            _subscribers.Add(subscriber);
-        }
-
-        public void RemoveSubscriber(INotificationSubscriber subscriber)
-        {
-            _subscribers.Remove(subscriber);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Private methods
-
-        private bool IsAvailable()
-        {
-            if (_mode == UserStorageServiceMode.MasterNode)
-            {
-                return true;
-            }
-
-            var stackTrace = new StackTrace();
-            var currentCalled = stackTrace.GetFrame(1).GetMethod();
-            var flag = (stackTrace.GetFrames() ?? throw new InvalidOperationException())
-                .Select(x => x.GetMethod())
-                .Count(x => x == currentCalled);
-
-            return flag >= 2;
-        }
 
         #endregion
     }
