@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UserStorageServices.Abstract;
+using UserStorageServices.Concrete.SerializationStrategies;
 
 namespace UserStorageServices.Concrete.Repositories
 {
@@ -9,34 +10,31 @@ namespace UserStorageServices.Concrete.Repositories
     {
         private readonly string _fileName;
 
-        public UserMemoryCacheWithState(IUserIdGenerator generator = null, string path = null) : base(generator)
+        private readonly IUserSerializationStrategy _serializationStrategy;
+
+        public UserMemoryCacheWithState(
+            IUserIdGenerator generator = null,
+            IUserSerializationStrategy serializationStrategy = null,
+            string path = null) : base(generator)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
-                path = "repository.bin";
+                path = "repository";
             }
+
+            _serializationStrategy = serializationStrategy ?? new BinaryUserSerializationStrategy();
 
             _fileName = path;
         }
 
         public override void Start()
         {
-            var formatter = new BinaryFormatter();
-
-            using (FileStream fs = new FileStream(_fileName, FileMode.Open))
-            {
-                Users = (HashSet<User>) formatter.Deserialize(fs);
-            }
+            Users = _serializationStrategy.DeserializeUsers(_fileName);
         }
 
         public override void Stop()
         {
-            var formatter = new BinaryFormatter();
-
-            using (FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
+            _serializationStrategy.SerializeUsers(Users, _fileName);
         }
     }
 }
