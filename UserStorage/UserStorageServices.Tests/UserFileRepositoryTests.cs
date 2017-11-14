@@ -11,14 +11,14 @@ using UserStorageServices.Concrete.SerializationStrategies;
 namespace UserStorageServices.Tests
 {
     [TestClass]
-    public class UserMemoryCacheWithStateTests
+    public class UserFileRepositoryTests
     {
         [TestMethod]
         public void StartStop_BinarySerializer_Success()
         {
             // Arrange
-            var stateIn = new UserMemoryCacheWithState();
-            var stateOut = new UserMemoryCacheWithState();
+            var stateIn = new UserFileRepository();
+            var stateOut = new UserFileRepository();
 
             var users = new HashSet<User>
             {
@@ -45,8 +45,8 @@ namespace UserStorageServices.Tests
         public void StartAndStop_XmlSerializer_Success()
         {
             // Arrange
-            var stateIn = new UserMemoryCacheWithState(serializationStrategy: new XmlUserSerializationStrategy());
-            var stateOut = new UserMemoryCacheWithState(serializationStrategy: new XmlUserSerializationStrategy());
+            var stateIn = new UserFileRepository(serializationStrategy: new XmlUserSerializationStrategy());
+            var stateOut = new UserFileRepository(serializationStrategy: new XmlUserSerializationStrategy());
 
             var users = new HashSet<User>
             {

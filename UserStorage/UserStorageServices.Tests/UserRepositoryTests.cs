@@ -9,13 +9,13 @@ using UserStorageServices.Concrete.Repositories;
 namespace UserStorageServices.Tests
 {
     [TestClass]
-    public class UserMemoryCacheTests
+    public class UserRepositoryTests
     {
         [TestMethod]
         public void Get_User_Found()
         {
             // Arrange
-            var userMemoryCache = new UserMemoryCache();
+            var userMemoryCache = new UserRepository();
             User user = (new User()
             {
                 Id = Guid.NewGuid(),
@@ -36,7 +36,7 @@ namespace UserStorageServices.Tests
         public void Set_User_Seted()
         {
             // Arrange
-            var userMemoryCache = new UserMemoryCache();
+            var userMemoryCache = new UserRepository();
 
             // Act
             userMemoryCache.Set(new User()
@@ -55,7 +55,7 @@ namespace UserStorageServices.Tests
         public void Delete_User_Deleted()
         {
             // Arrange
-            var userMemoryCache = new UserMemoryCache();
+            var userMemoryCache = new UserRepository();
             var user = new User()
             {
                 Age = 20,
@@ -75,7 +75,7 @@ namespace UserStorageServices.Tests
         public void Query_User_Found()
         {
             // Arrange
-            var userMemoryCache = new UserMemoryCache();
+            var userMemoryCache = new UserRepository();
             userMemoryCache.Set(new User()
             {
                 Id = Guid.NewGuid(),

@@ -23,7 +23,7 @@ namespace UserStorageApp
         {
             var path = ReadSetting("SavePath");
 
-            _repository = repository ?? new UserMemoryCacheWithState(path: path);
+            _repository = repository ?? new UserFileRepository(path: path);
 
             _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
         }

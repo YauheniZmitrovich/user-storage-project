@@ -40,7 +40,7 @@ namespace UserStorageServices.Abstract
         {
             _validator = validator ?? new UserValidator();
 
-            _userRepository = repository ?? new UserMemoryCache();
+            _userRepository = repository ?? new UserRepository();
         }
 
         /// <summary>

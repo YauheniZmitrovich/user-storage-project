@@ -59,8 +59,8 @@
     <Compile Include="Concrete\GuidUserIdGenerator.cs" />
     <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
     <Compile Include="Concrete\Services\UserStorageServiceSlave.cs" />
-    <Compile Include="Concrete\Repositories\UserMemoryCache.cs" />
-    <Compile Include="Concrete\Repositories\UserMemoryCacheWithState.cs" />
+    <Compile Include="Concrete\Repositories\UserRepository.cs" />
+    <Compile Include="Concrete\Repositories\UserFileRepository.cs" />
     <Compile Include="Concrete\Validators\UserValidator.cs" />
     <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
     <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />

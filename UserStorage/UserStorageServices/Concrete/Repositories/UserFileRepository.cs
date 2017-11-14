@@ -6,13 +6,13 @@ using UserStorageServices.Concrete.SerializationStrategies;
 
 namespace UserStorageServices.Concrete.Repositories
 {
-    public class UserMemoryCacheWithState : UserMemoryCache
+    public class UserFileRepository : UserRepository
     {
         private readonly string _fileName;
 
         private readonly IUserSerializationStrategy _serializationStrategy;
 
-        public UserMemoryCacheWithState(
+        public UserFileRepository(
             IUserIdGenerator generator = null,
             IUserSerializationStrategy serializationStrategy = null,
             string path = null) : base(generator)

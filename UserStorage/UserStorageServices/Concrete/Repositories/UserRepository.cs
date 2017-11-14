@@ -5,13 +5,13 @@ using UserStorageServices.Abstract;
 
 namespace UserStorageServices.Concrete.Repositories
 {
-    public class UserMemoryCache : IUserRepository
+    public class UserRepository : IUserRepository
     {
         protected HashSet<User> Users;
 
         private readonly IUserIdGenerator _userIdGenerator;
 
-        public UserMemoryCache(IUserIdGenerator generator = null)
+        public UserRepository(IUserIdGenerator generator = null)
         {
             Users = new HashSet<User>();
 
