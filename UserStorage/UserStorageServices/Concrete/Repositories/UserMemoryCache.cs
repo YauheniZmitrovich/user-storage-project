@@ -7,32 +7,32 @@ namespace UserStorageServices.Concrete.Repositories
 {
     public class UserMemoryCache : IUserRepository
     {
-        private readonly HashSet<User> _users;
+        protected HashSet<User> Users;
 
         private readonly IUserIdGenerator _userIdGenerator;
 
         public UserMemoryCache(IUserIdGenerator generator = null)
         {
-            _users = new HashSet<User>();
+            Users = new HashSet<User>();
 
             _userIdGenerator = generator ?? new GuidUserIdGenerator();
         }
 
-        public int Count => _users.Count;
+        public int Count => Users.Count;
 
-        public void Start()
+        public virtual void Start()
         {
             throw new NotImplementedException();
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             throw new NotImplementedException();
         }
 
         public User Get(Guid id)
         {
-            return _users.FirstOrDefault(u => u.Id == id);
+            return Users.FirstOrDefault(u => u.Id == id);
         }
 
         public void Set(User user)
@@ -43,7 +43,7 @@ namespace UserStorageServices.Concrete.Repositories
             {
                 user.Id = _userIdGenerator.Generate();
  
-                _users.Add(user);
+                Users.Add(user);
             }
             else
             {
@@ -57,12 +57,12 @@ namespace UserStorageServices.Concrete.Repositories
         {
             var sourceUser = Get(id);
 
-            return _users.Remove(sourceUser);
+            return Users.Remove(sourceUser);
         }
 
         public IEnumerable<User> Query(Predicate<User> comparer)
         {
-            return _users.Select(u => u).Where(u => comparer(u));
+            return Users.Select(u => u).Where(u => comparer(u));
         }
     }
 }

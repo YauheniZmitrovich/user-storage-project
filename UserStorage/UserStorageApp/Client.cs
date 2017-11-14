@@ -1,6 +1,8 @@
 ﻿using UserStorageServices;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete;
+using UserStorageServices.Concrete.Repositories;
+using UserStorageServices.Concrete.Services;
 
 namespace UserStorageApp
 {
@@ -11,12 +13,16 @@ namespace UserStorageApp
     {
         private readonly IUserStorageService _userStorageService;
 
+        private readonly IUserRepository _repository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client(IUserStorageService userStorageService)
+        public Client(IUserStorageService userStorageService = null, IUserRepository repository = null)
         {
-            _userStorageService = userStorageService;
+            _repository = repository ?? new UserMemoryCacheWithState();
+
+            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
         }
 
         /// <summary>
@@ -31,11 +37,15 @@ namespace UserStorageApp
                 Age = 25
             };
 
+            _repository.Start();
+
             _userStorageService.Add(user);
 
             _userStorageService.Remove(user);
 
             _userStorageService.SearchByFirstName("Alex");
+
+            _repository.Stop();
         }
     }
 }
