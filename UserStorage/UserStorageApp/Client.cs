@@ -1,4 +1,5 @@
-﻿using UserStorageServices;
+﻿using System.Configuration;
+using UserStorageServices;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete;
 using UserStorageServices.Concrete.Repositories;
@@ -20,7 +21,9 @@ namespace UserStorageApp
         /// </summary>
         public Client(IUserStorageService userStorageService = null, IUserRepository repository = null)
         {
-            _repository = repository ?? new UserMemoryCacheWithState();
+            var path = ReadSetting("SavePath");
+
+            _repository = repository ?? new UserMemoryCacheWithState(path: path);
 
             _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
         }
@@ -46,6 +49,13 @@ namespace UserStorageApp
             _userStorageService.SearchByFirstName("Alex");
 
             _repository.Stop();
+        }
+
+        private static string ReadSetting(string key)
+        {
+            var appSettings = ConfigurationManager.AppSettings;
+
+            return appSettings[key] ?? "NotFound";
         }
     }
 }
