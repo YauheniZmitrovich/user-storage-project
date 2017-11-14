@@ -18,7 +18,7 @@ namespace UserStorageServices.Abstract
 
         void Set(User user);
 
-        bool Delete(User user);
+        bool Delete(Guid id);
 
         IEnumerable<User> Query(Predicate<User> predicate);
     }

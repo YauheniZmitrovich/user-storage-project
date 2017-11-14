@@ -13,8 +13,8 @@ namespace UserStorageServices.Concrete.Services
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceSlave"/>. 
         /// </summary>
-        public UserStorageServiceSlave(IUserIdGenerator idGenerator = null, IUserValidator validator = null)
-            : base(idGenerator, validator) { }
+        public UserStorageServiceSlave(IUserRepository repository = null, IUserValidator validator = null)
+            : base(repository, validator) { }
 
         /// <summary>
         /// Mode of <see cref="UserStorageServiceSlave"/> work. 
@@ -88,7 +88,7 @@ namespace UserStorageServices.Concrete.Services
             var flag = (trace.GetFrames() ?? throw new InvalidOperationException()).Select(x => x.GetMethod())
                 .Contains(calledMethod);
 
-            return flag; 
+            return flag;
         }
 
         #endregion

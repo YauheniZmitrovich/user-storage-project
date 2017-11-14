@@ -28,10 +28,10 @@ namespace UserStorageServices.Concrete.Services
         /// Create an instance of <see cref="UserStorageServiceMaster"/>. 
         /// </summary>
         public UserStorageServiceMaster(
-            IUserIdGenerator idGenerator = null,
-            IUserValidator validator = null,
-            IEnumerable<IUserStorageService> slaveServices = null)
-            : base(idGenerator, validator)
+        IUserRepository repository = null,
+        IUserValidator validator = null,
+        IEnumerable<IUserStorageService> slaveServices = null)
+            : base(repository, validator)
         {
             _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
 
@@ -97,7 +97,7 @@ namespace UserStorageServices.Concrete.Services
 
             foreach (var ob in _subscribers)
             {
-                ob.UserRemoved(Users.First(x => x.Id == id));
+                ob.UserRemoved(FindFirst(x => x.Id == id));
             }
 
             foreach (var service in _slaveServices)
