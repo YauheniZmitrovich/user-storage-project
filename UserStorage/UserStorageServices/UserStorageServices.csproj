@@ -48,13 +48,19 @@
   <ItemGroup>
     <Compile Include="Abstract\INotificationSubscriber.cs" />
     <Compile Include="Abstract\IUserIdGenerator.cs" />
+    <Compile Include="Abstract\IUserRepository.cs" />
+    <Compile Include="Abstract\IUserSerializationStrategy.cs" />
     <Compile Include="Abstract\IUserStorageService.cs" />
     <Compile Include="Abstract\IUserValidator.cs" />
-    <Compile Include="Concrete\UserStorageServiceMaster.cs" />
-    <Compile Include="Concrete\UserStorageServiceLog.cs" />
-    <Compile Include="Concrete\GuidUserIdGenerator.cs" />
+    <Compile Include="Concrete\SerializationStrategies\BinaryUserSerializationStrategy.cs" />
+    <Compile Include="Concrete\SerializationStrategies\XmlUserSerializationStrategy.cs" />
+    <Compile Include="Concrete\Services\UserStorageServiceMaster.cs" />
+    <Compile Include="Concrete\Services\UserStorageServiceLog.cs" />
+    <Compile Include="Concrete\UserIdGenerator.cs" />
     <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
-    <Compile Include="Concrete\UserStorageServiceSlave.cs" />
+    <Compile Include="Concrete\Services\UserStorageServiceSlave.cs" />
+    <Compile Include="Concrete\Repositories\UserRepository.cs" />
+    <Compile Include="Concrete\Repositories\UserFileRepository.cs" />
     <Compile Include="Concrete\Validators\UserValidator.cs" />
     <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
     <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />

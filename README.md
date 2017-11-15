@@ -360,9 +360,9 @@ Refactor tests, run tests, review and commit.
 
 ## Step 5 - Persistence
 
-- [ ] New branch "step5".
+- [X] New branch "step5".
 
-- [ ] Test-First: create a new interface _IUserRepository_ and two new classes:
+- [X] Test-First: create a new interface _IUserRepository_ and two new classes:
 
 ![Master-Slave Repository](images/MasterSlaveRepository.png "Master-Slave Repository")
 
@@ -370,14 +370,14 @@ There's an inconsistency in the diagram above - the _IUserRepository_ interface 
 
 Run tests, review and commit.
 
-- [ ] Refactor your code.
+- [X] Refactor your code.
   * [Extract Method](https://refactoring.guru/extract-method): extract all code in _UserStorageService_ class that access an internal user collection to private method with Get, Set and Query method names.
   * [Move Field](https://refactoring.guru/move-field): move a user collection from _UserStorageServiceBase_ to _UserMemoryCache_ class.
   * [Move Method](https://refactoring.guru/move-method): move your new private Get, Set and Query methods to _UserMemoryCache_ class, and make them public.
 
 Add new tests, run all tests, review and commit.
 
-- [ ] Modify _UserMemoryCacheWithState_:
+- [X] Modify _UserMemoryCacheWithState_:
   * Stop() should save repository state to the disk file.
   * Start() should load respository state from the disk file.
   * Client should call Start() method before making any calls to _IUserStorageService_ to load the repository state.
@@ -389,25 +389,25 @@ Add new integration tests ([save to a file, load from a file](https://stackoverf
 
 Run all tests, review and commit.
 
-- [ ] Use [ConfigurationManager.AppSettings](https://msdn.microsoft.com/en-us/library/system.configuration.configurationmanager.appsettings(v=vs.110).aspx) to store a name of repository user data file. Use the setting value to configure _UserMemoryCacheWithState_ class from the outside.
+- [X] Use [ConfigurationManager.AppSettings](https://msdn.microsoft.com/en-us/library/system.configuration.configurationmanager.appsettings(v=vs.110).aspx) to store a name of repository user data file. Use the setting value to configure _UserMemoryCacheWithState_ class from the outside.
 
 Run tests, review and commit.
 
-- [ ] Strategy: extract serialization functionality as a strategy, and a new strategy to support [XML serialization using XmlSerializer](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-serialize-using-xmlserializer).
+- [X] Strategy: extract serialization functionality as a strategy, and a new strategy to support [XML serialization using XmlSerializer](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/how-to-serialize-using-xmlserializer).
 
 Add new tests, run all tests, review and commit.
 
 ![User Repository Strategy](images/UserRepositoryStrategy.png "User Repository Strategy")
 
-- [ ] Give your own meaningful names to _UserMemoryCache_ and _UserMemoryCacheWithState_ classes.
+- [X] Give your own meaningful names to _UserMemoryCache_ and _UserMemoryCacheWithState_ classes.
 
 Refactor, run tests, review and commit.
 
-- [ ] Add implementation that will allow UserStorage services save the last generated identifier to continue generating after shutdown.
+- [X] Add implementation that will allow UserStorage services save the last generated identifier to continue generating after shutdown.
 
 Refactor, run tests, review and commit.
 
-- [ ] Run StyleCop, fix issues, commit. Mark, commit. Publish "step5". Merge "step5" into master. Publish.
+- [X] Run StyleCop, fix issues, commit. Mark, commit. Publish "step5". Merge "step5" into master. Publish.
 
 
 ## Step 6 - Refactor

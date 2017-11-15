@@ -4,7 +4,7 @@ using System.Linq;
 using UserStorageServices.Abstract;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Concrete.Services
 {
     public sealed class UserStorageServiceMaster : UserStorageServiceBase
     {
@@ -28,10 +28,10 @@ namespace UserStorageServices.Concrete
         /// Create an instance of <see cref="UserStorageServiceMaster"/>. 
         /// </summary>
         public UserStorageServiceMaster(
-            IUserIdGenerator idGenerator = null,
-            IUserValidator validator = null,
-            IEnumerable<IUserStorageService> slaveServices = null)
-            : base(idGenerator, validator)
+        IUserRepository repository = null,
+        IUserValidator validator = null,
+        IEnumerable<IUserStorageService> slaveServices = null)
+            : base(repository, validator)
         {
             _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
 
@@ -89,7 +89,7 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public override void Remove(Guid id)
+        public override void Remove(int id)
         {
             OnUserRemoved(FindFirst(x => x.Id == id));
 
@@ -97,7 +97,7 @@ namespace UserStorageServices.Concrete
 
             foreach (var ob in _subscribers)
             {
-                ob.UserRemoved(Users.First(x => x.Id == id));
+                ob.UserRemoved(FindFirst(x => x.Id == id));
             }
 
             foreach (var service in _slaveServices)

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete;
+using UserStorageServices.Concrete.Repositories;
 using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
@@ -20,12 +21,7 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Container for users.
         /// </summary>
-        protected readonly HashSet<User> Users;
-
-        /// <summary>
-        /// Generator of user id.
-        /// </summary>
-        private readonly IUserIdGenerator _userIdGenerator;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
         /// Validator of user data.
@@ -40,20 +36,19 @@ namespace UserStorageServices.Abstract
         /// Create an instance of <see cref="UserStorageServiceBase"/>. 
         /// </summary>
         protected UserStorageServiceBase(
-            IUserIdGenerator idGenerator = null,
+            IUserRepository repository = null,
             IUserValidator validator = null)
         {
-            Users = new HashSet<User>();
-
-            _userIdGenerator = idGenerator ?? new GuidUserIdGenerator();
             _validator = validator ?? new UserValidator();
+
+            _userRepository = repository ?? new UserRepository();
         }
 
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count => Users.Count;
+        public int Count => _userRepository.Count;
 
         /// <summary>
         /// Mode of <see cref="UserStorageServiceBase"/> work. 
@@ -74,9 +69,7 @@ namespace UserStorageServices.Abstract
         {
             _validator.Validate(user);
 
-            user.Id = _userIdGenerator.Generate();
-
-            Users.Add(user);
+            _userRepository.Set(user);
         }
 
         /// <summary>
@@ -94,11 +87,9 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public virtual void Remove(Guid id)
+        public virtual void Remove(int id)
         {
-            int number = Users.RemoveWhere(x => x.Id == id);
-
-            if (number == 0)
+            if (!_userRepository.Delete(id))
             {
                 throw new UserNotFoundException("The user was not found");
             }
@@ -170,7 +161,7 @@ namespace UserStorageServices.Abstract
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return Users.Select(u => u).Where(u => comparer(u));
+            return _userRepository.Query(comparer);
         }
 
         #endregion
@@ -217,7 +208,7 @@ namespace UserStorageServices.Abstract
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return Users.FirstOrDefault(u => comparer(u));
+            return _userRepository.Query(comparer).FirstOrDefault();
         }
 
         #endregion

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserStorageServices.Abstract;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Concrete.Services
 {
     public sealed class UserStorageServiceSlave : UserStorageServiceBase
     {
@@ -16,8 +13,8 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceSlave"/>. 
         /// </summary>
-        public UserStorageServiceSlave(IUserIdGenerator idGenerator = null, IUserValidator validator = null)
-            : base(idGenerator, validator) { }
+        public UserStorageServiceSlave(IUserRepository repository = null, IUserValidator validator = null)
+            : base(repository, validator) { }
 
         /// <summary>
         /// Mode of <see cref="UserStorageServiceSlave"/> work. 
@@ -53,7 +50,7 @@ namespace UserStorageServices.Concrete
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public override void Remove(Guid id)
+        public override void Remove(int id)
         {
             if (IsAvailable())
             {
@@ -91,7 +88,7 @@ namespace UserStorageServices.Concrete
             var flag = (trace.GetFrames() ?? throw new InvalidOperationException()).Select(x => x.GetMethod())
                 .Contains(calledMethod);
 
-            return flag; 
+            return flag;
         }
 
         #endregion

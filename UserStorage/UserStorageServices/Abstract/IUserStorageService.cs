@@ -49,7 +49,7 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        void Remove(Guid id);
+        void Remove(int id);
 
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage.
