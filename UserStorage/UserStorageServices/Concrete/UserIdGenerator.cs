@@ -12,12 +12,12 @@ namespace UserStorageServices.Concrete
     /// </summary>
     public class UserIdGenerator : IUserIdGenerator
     {
-        public int LastId { get; set; }
-
         public UserIdGenerator(int lastId = -1)
         {
             LastId = lastId;
         }
+
+        public int LastId { get; set; }
 
         public int Generate()
         {

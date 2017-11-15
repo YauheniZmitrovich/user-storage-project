@@ -40,4 +40,3 @@ namespace UserStorageServices.Concrete.SerializationStrategies
         }
     }
 }
-

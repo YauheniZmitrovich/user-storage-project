@@ -7,10 +7,6 @@ namespace UserStorageServices.Concrete.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        protected HashSet<User> Users;
-
-        protected IUserIdGenerator IdGenerator;
-
         public UserRepository(IUserIdGenerator generator = null)
         {
             Users = new HashSet<User>();
@@ -19,6 +15,10 @@ namespace UserStorageServices.Concrete.Repositories
         }
 
         public int Count => Users.Count;
+
+        protected HashSet<User> Users { get; set; }
+
+        protected IUserIdGenerator IdGenerator { get; set; }
 
         public virtual void Start()
         {
@@ -42,7 +42,7 @@ namespace UserStorageServices.Concrete.Repositories
             if (sourceUser == null)
             {
                 user.Id = IdGenerator.Generate();
- 
+
                 Users.Add(user);
             }
             else

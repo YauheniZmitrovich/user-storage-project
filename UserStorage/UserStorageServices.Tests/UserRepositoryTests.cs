@@ -16,12 +16,12 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userMemoryCache = new UserRepository();
-            User user = (new User()
+            User user = new User
             {
                 Age = 20,
                 FirstName = "Vasya",
                 LastName = "Petrov"
-            });
+            };
             userMemoryCache.Set(user);
 
             // Act
@@ -85,7 +85,7 @@ namespace UserStorageServices.Tests
             var result = userMemoryCache.Query(u => u.Age == 20);
 
             // Assert
-            Assert.AreEqual("Vasya",result.FirstOrDefault()?.FirstName);
+            Assert.AreEqual("Vasya", result.FirstOrDefault()?.FirstName);
         }
     }
 }

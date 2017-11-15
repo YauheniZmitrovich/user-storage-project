@@ -21,7 +21,7 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Container for users.
         /// </summary>
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
         /// Validator of user data.
@@ -35,7 +35,8 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceBase"/>. 
         /// </summary>
-        protected UserStorageServiceBase(IUserRepository repository = null,
+        protected UserStorageServiceBase(
+            IUserRepository repository = null,
             IUserValidator validator = null)
         {
             _validator = validator ?? new UserValidator();
