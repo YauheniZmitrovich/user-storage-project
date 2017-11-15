@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UserStorageServices.Abstract;
 using UserStorageServices.Concrete.SerializationStrategies;
@@ -30,6 +31,8 @@ namespace UserStorageServices.Concrete.Repositories
         public override void Start()
         {
             Users = _serializationStrategy.DeserializeUsers(_fileName);
+
+            IdGenerator.LastId = Users.Max(u => u.Id);
         }
 
         public override void Stop()

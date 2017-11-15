@@ -86,7 +86,7 @@ namespace UserStorageServices.Abstract
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public virtual void Remove(Guid id)
+        public virtual void Remove(int id)
         {
             if (!_userRepository.Delete(id))
             {

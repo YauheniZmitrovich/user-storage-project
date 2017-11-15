@@ -88,9 +88,9 @@ namespace UserStorageServices.Concrete.Services
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public override void Remove(Guid id)
+        public override void Remove(int id)
         {
-            LogIfEnabled("Remove(Guid id) method is called.");
+            LogIfEnabled("Remove(int id) method is called.");
 
             StorageService.Remove(id);
         }

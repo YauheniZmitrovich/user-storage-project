@@ -56,7 +56,7 @@
     <Compile Include="Concrete\SerializationStrategies\XmlUserSerializationStrategy.cs" />
     <Compile Include="Concrete\Services\UserStorageServiceMaster.cs" />
     <Compile Include="Concrete\Services\UserStorageServiceLog.cs" />
-    <Compile Include="Concrete\GuidUserIdGenerator.cs" />
+    <Compile Include="Concrete\UserIdGenerator.cs" />
     <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
     <Compile Include="Concrete\Services\UserStorageServiceSlave.cs" />
     <Compile Include="Concrete\Repositories\UserRepository.cs" />

@@ -22,8 +22,8 @@ namespace UserStorageServices.Tests
 
             var users = new HashSet<User>
             {
-                new User {Age = 15, FirstName = "Vasya", LastName = "Petrov", Id = Guid.NewGuid()},
-                new User {Age = 20, FirstName = "Petr", LastName = "Vasin", Id = Guid.NewGuid()}
+                new User {Age = 15, FirstName = "Vasya", LastName = "Petrov"},
+                new User {Age = 20, FirstName = "Petr", LastName = "Vasin"}
             };
 
             foreach (var user in users)
@@ -50,8 +50,8 @@ namespace UserStorageServices.Tests
 
             var users = new HashSet<User>
             {
-                new User {Age = 15, FirstName = "Vasya", LastName = "Petrov", Id = Guid.NewGuid()},
-                new User {Age = 20, FirstName = "Petr", LastName = "Vasin", Id = Guid.NewGuid()}
+                new User {Age = 15, FirstName = "Vasya", LastName = "Petrov"},
+                new User {Age = 20, FirstName = "Petr", LastName = "Vasin"}
             };
 
             foreach (var user in users)

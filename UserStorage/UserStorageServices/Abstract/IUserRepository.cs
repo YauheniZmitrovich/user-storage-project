@@ -14,11 +14,11 @@ namespace UserStorageServices.Abstract
 
         void Stop();
 
-        User Get(Guid id);
+        User Get(int id);
 
         void Set(User user);
 
-        bool Delete(Guid id);
+        bool Delete(int id);
 
         IEnumerable<User> Query(Predicate<User> predicate);
     }

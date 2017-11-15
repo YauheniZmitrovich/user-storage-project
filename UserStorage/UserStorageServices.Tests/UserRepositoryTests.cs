@@ -18,7 +18,6 @@ namespace UserStorageServices.Tests
             var userMemoryCache = new UserRepository();
             User user = (new User()
             {
-                Id = Guid.NewGuid(),
                 Age = 20,
                 FirstName = "Vasya",
                 LastName = "Petrov"
@@ -41,7 +40,6 @@ namespace UserStorageServices.Tests
             // Act
             userMemoryCache.Set(new User()
             {
-                Id = Guid.NewGuid(),
                 Age = 20,
                 FirstName = "Vasya",
                 LastName = "Petrov"
@@ -78,7 +76,6 @@ namespace UserStorageServices.Tests
             var userMemoryCache = new UserRepository();
             userMemoryCache.Set(new User()
             {
-                Id = Guid.NewGuid(),
                 Age = 20,
                 FirstName = "Vasya",
                 LastName = "Petrov"

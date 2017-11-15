@@ -24,7 +24,7 @@ namespace UserStorageServices.Abstract
 
         public abstract void Add(string firstName, string lastName, int age);
 
-        public abstract void Remove(Guid id);
+        public abstract void Remove(int id);
 
         public abstract void Remove(User user);
 

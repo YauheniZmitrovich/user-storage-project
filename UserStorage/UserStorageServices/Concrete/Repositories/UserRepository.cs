@@ -9,13 +9,13 @@ namespace UserStorageServices.Concrete.Repositories
     {
         protected HashSet<User> Users;
 
-        private readonly IUserIdGenerator _userIdGenerator;
+        protected IUserIdGenerator IdGenerator;
 
         public UserRepository(IUserIdGenerator generator = null)
         {
             Users = new HashSet<User>();
 
-            _userIdGenerator = generator ?? new GuidUserIdGenerator();
+            IdGenerator = generator ?? new UserIdGenerator();
         }
 
         public int Count => Users.Count;
@@ -30,7 +30,7 @@ namespace UserStorageServices.Concrete.Repositories
             throw new NotImplementedException();
         }
 
-        public User Get(Guid id)
+        public User Get(int id)
         {
             return Users.FirstOrDefault(u => u.Id == id);
         }
@@ -41,7 +41,7 @@ namespace UserStorageServices.Concrete.Repositories
 
             if (sourceUser == null)
             {
-                user.Id = _userIdGenerator.Generate();
+                user.Id = IdGenerator.Generate();
  
                 Users.Add(user);
             }
@@ -53,7 +53,7 @@ namespace UserStorageServices.Concrete.Repositories
             }
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(int id)
         {
             var sourceUser = Get(id);
 

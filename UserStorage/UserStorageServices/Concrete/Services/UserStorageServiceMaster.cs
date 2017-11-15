@@ -89,7 +89,7 @@ namespace UserStorageServices.Concrete.Services
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage by id.
         /// </summary>
-        public override void Remove(Guid id)
+        public override void Remove(int id)
         {
             OnUserRemoved(FindFirst(x => x.Id == id));
 
