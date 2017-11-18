@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\NotificationType.cs" />
+    <Compile Include="Notifications\AddUserActionNotification.cs" />
+    <Compile Include="Notifications\DeleteUserActionNotification.cs" />
+    <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Notifications\NotificationContainer.cs" />
     <Compile Include="Repositories\Abstract\IUserRepositoryManager.cs" />
     <Compile Include="Services\Abstract\INotificationSubscriber.cs" />
     <Compile Include="Generators\Abstract\IUserIdGenerator.cs" />

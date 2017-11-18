@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace UserStorageServices.Enums
+{
+    [XmlType(IncludeInSchema = false)]
+    public enum NotificationType
+    {
+        [XmlEnum("addUser")]
+        AddUser,
+
+        [XmlEnum("deleteUser")]
+        DeleteUser
+    }
+}
