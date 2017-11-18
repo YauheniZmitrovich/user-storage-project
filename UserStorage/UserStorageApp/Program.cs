@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete;
-using UserStorageServices.Concrete.Services;
-using UserStorageServices.Concrete.Validators;
 using UserStorageServices.Enums;
+using UserStorageServices.Services.Abstract;
+using UserStorageServices.Services.Concrete;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
 
 namespace UserStorageApp

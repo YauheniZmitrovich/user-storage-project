@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete.SerializationStrategies;
+﻿using System.Linq;
+using UserStorageServices.Generators.Abstract;
+using UserStorageServices.Repositories.Abstract;
+using UserStorageServices.SerializationStrategies.Abstract;
+using UserStorageServices.SerializationStrategies.Concrete;
 
-namespace UserStorageServices.Concrete.Repositories
+namespace UserStorageServices.Repositories.Concrete
 {
-    public class UserFileRepository : UserRepository
+    public class UserFileRepository : UserRepository, IUserRepositoryManager
     {
         private readonly string _fileName;
 
@@ -28,14 +27,14 @@ namespace UserStorageServices.Concrete.Repositories
             _fileName = path;
         }
 
-        public override void Start()
+        public void Start()
         {
             Users = _serializationStrategy.DeserializeUsers(_fileName);
 
             IdGenerator.LastId = Users.Max(u => u.Id);
         }
 
-        public override void Stop()
+        public void Stop()
         {
             _serializationStrategy.SerializeUsers(Users, _fileName);
         }

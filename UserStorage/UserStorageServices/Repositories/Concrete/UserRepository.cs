@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UserStorageServices.Abstract;
+using UserStorageServices.Generators.Abstract;
+using UserStorageServices.Generators.Concrete;
+using UserStorageServices.Repositories.Abstract;
 
-namespace UserStorageServices.Concrete.Repositories
+namespace UserStorageServices.Repositories.Concrete
 {
     public class UserRepository : IUserRepository
     {
@@ -19,16 +21,6 @@ namespace UserStorageServices.Concrete.Repositories
         protected HashSet<User> Users { get; set; }
 
         protected IUserIdGenerator IdGenerator { get; set; }
-
-        public virtual void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Stop()
-        {
-            throw new NotImplementedException();
-        }
 
         public User Get(int id)
         {

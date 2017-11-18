@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserStorageServices.Abstract;
 using UserStorageServices.CustomExceptions;
+using UserStorageServices.Validators.Abstract;
 
-namespace UserStorageServices.Concrete.Validators
+namespace UserStorageServices.Validators.Concrete
 {
     public class UserValidator : IUserValidator
     {

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete;
-using UserStorageServices.Concrete.Services;
-using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
+using UserStorageServices.Services.Abstract;
+using UserStorageServices.Services.Concrete;
 
 namespace UserStorageServices.Tests
 {
