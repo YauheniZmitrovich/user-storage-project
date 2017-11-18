@@ -1,4 +1,4 @@
-﻿namespace UserStorageServices.Repositories.Abstract
+﻿namespace UserStorageServices.Services.Abstract
 {
     public interface INotificationSubscriber
     {

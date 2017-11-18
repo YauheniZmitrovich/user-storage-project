@@ -7,10 +7,6 @@ namespace UserStorageServices.Repositories.Abstract
     {
         int Count { get; }
 
-        void Start();
-
-        void Stop();
-
         User Get(int id);
 
         void Set(User user);

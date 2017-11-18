@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using UserStorageServices.Generators.Abstract;
+using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.SerializationStrategies.Abstract;
 using UserStorageServices.SerializationStrategies.Concrete;
 
 namespace UserStorageServices.Repositories.Concrete
 {
-    public class UserFileRepository : UserRepository
+    public class UserFileRepository : UserRepository, IUserRepositoryManager
     {
         private readonly string _fileName;
 
@@ -26,14 +27,14 @@ namespace UserStorageServices.Repositories.Concrete
             _fileName = path;
         }
 
-        public override void Start()
+        public void Start()
         {
             Users = _serializationStrategy.DeserializeUsers(_fileName);
 
             IdGenerator.LastId = Users.Max(u => u.Id);
         }
 
-        public override void Stop()
+        public void Stop()
         {
             _serializationStrategy.SerializeUsers(Users, _fileName);
         }

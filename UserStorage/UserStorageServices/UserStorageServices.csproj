@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Repositories\Abstract\INotificationSubscriber.cs" />
+    <Compile Include="Repositories\Abstract\IUserRepositoryManager.cs" />
+    <Compile Include="Services\Abstract\INotificationSubscriber.cs" />
     <Compile Include="Generators\Abstract\IUserIdGenerator.cs" />
     <Compile Include="Repositories\Abstract\IUserRepository.cs" />
     <Compile Include="SerializationStrategies\Abstract\IUserSerializationStrategy.cs" />

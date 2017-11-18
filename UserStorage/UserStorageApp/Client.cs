@@ -14,18 +14,18 @@ namespace UserStorageApp
     {
         private readonly IUserStorageService _userStorageService;
 
-        private readonly IUserRepository _repository;
+        private readonly IUserRepositoryManager _repositoryManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client(IUserStorageService userStorageService = null, IUserRepository repository = null)
+        public Client(IUserStorageService userStorageService = null, IUserRepositoryManager repository = null)
         {
             var path = ReadSetting("SavePath");
 
-            _repository = repository ?? new UserFileRepository(path: path);
+            _repositoryManager = repository ?? new UserFileRepository(path: path);
 
-            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
+            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster((IUserRepository)_repositoryManager));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace UserStorageApp
                 Age = 25
             };
 
-            _repository.Start();
+            _repositoryManager.Start();
 
             _userStorageService.Add(user);
 
@@ -48,7 +48,7 @@ namespace UserStorageApp
 
             _userStorageService.SearchByFirstName("Alex");
 
-            _repository.Stop();
+            _repositoryManager.Stop();
         }
 
         private static string ReadSetting(string key)

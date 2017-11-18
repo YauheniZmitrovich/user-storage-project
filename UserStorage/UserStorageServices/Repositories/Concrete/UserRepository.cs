@@ -22,16 +22,6 @@ namespace UserStorageServices.Repositories.Concrete
 
         protected IUserIdGenerator IdGenerator { get; set; }
 
-        public virtual void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Stop()
-        {
-            throw new NotImplementedException();
-        }
-
         public User Get(int id)
         {
             return Users.FirstOrDefault(u => u.Id == id);
