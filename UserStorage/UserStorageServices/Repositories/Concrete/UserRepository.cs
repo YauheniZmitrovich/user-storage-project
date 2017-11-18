@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UserStorageServices.Abstract;
+using UserStorageServices.Generators.Abstract;
+using UserStorageServices.Generators.Concrete;
+using UserStorageServices.Repositories.Abstract;
 
-namespace UserStorageServices.Concrete.Repositories
+namespace UserStorageServices.Repositories.Concrete
 {
     public class UserRepository : IUserRepository
     {

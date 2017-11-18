@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using UserStorageServices.Abstract;
+using UserStorageServices.SerializationStrategies.Abstract;
 
-namespace UserStorageServices.Concrete.SerializationStrategies
+namespace UserStorageServices.SerializationStrategies.Concrete
 {
     public class BinaryUserSerializationStrategy : IUserSerializationStrategy
     {

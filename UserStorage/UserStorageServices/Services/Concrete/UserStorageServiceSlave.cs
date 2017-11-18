@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using UserStorageServices.Abstract;
 using UserStorageServices.Enums;
+using UserStorageServices.Repositories.Abstract;
+using UserStorageServices.Services.Abstract;
+using UserStorageServices.Validators.Abstract;
 
-namespace UserStorageServices.Concrete.Services
+namespace UserStorageServices.Services.Concrete
 {
     public sealed class UserStorageServiceSlave : UserStorageServiceBase
     {

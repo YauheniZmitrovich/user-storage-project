@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
 using UserStorageServices;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete;
-using UserStorageServices.Concrete.Repositories;
-using UserStorageServices.Concrete.Services;
+using UserStorageServices.Repositories.Abstract;
+using UserStorageServices.Repositories.Concrete;
+using UserStorageServices.Services.Abstract;
+using UserStorageServices.Services.Concrete;
 
 namespace UserStorageApp
 {

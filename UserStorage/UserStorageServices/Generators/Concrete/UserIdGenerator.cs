@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserStorageServices.Abstract;
+﻿using UserStorageServices.Generators.Abstract;
 
-namespace UserStorageServices.Concrete
+namespace UserStorageServices.Generators.Concrete
 {
     /// <summary>
     /// Generator of user id via <see cref="int"/>.

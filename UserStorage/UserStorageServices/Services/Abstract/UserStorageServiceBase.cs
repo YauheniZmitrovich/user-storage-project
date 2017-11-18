@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete;
-using UserStorageServices.Concrete.Repositories;
-using UserStorageServices.Concrete.Validators;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
+using UserStorageServices.Repositories.Abstract;
+using UserStorageServices.Repositories.Concrete;
+using UserStorageServices.Validators.Abstract;
+using UserStorageServices.Validators.Concrete;
 
-namespace UserStorageServices.Abstract
+namespace UserStorageServices.Services.Abstract
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.

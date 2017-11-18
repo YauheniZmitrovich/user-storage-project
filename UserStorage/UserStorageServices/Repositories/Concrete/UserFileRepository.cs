@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using UserStorageServices.Abstract;
-using UserStorageServices.Concrete.SerializationStrategies;
+﻿using System.Linq;
+using UserStorageServices.Generators.Abstract;
+using UserStorageServices.SerializationStrategies.Abstract;
+using UserStorageServices.SerializationStrategies.Concrete;
 
-namespace UserStorageServices.Concrete.Repositories
+namespace UserStorageServices.Repositories.Concrete
 {
     public class UserFileRepository : UserRepository
     {

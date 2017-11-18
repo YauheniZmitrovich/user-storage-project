@@ -46,31 +46,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\INotificationSubscriber.cs" />
-    <Compile Include="Abstract\IUserIdGenerator.cs" />
-    <Compile Include="Abstract\IUserRepository.cs" />
-    <Compile Include="Abstract\IUserSerializationStrategy.cs" />
-    <Compile Include="Abstract\IUserStorageService.cs" />
-    <Compile Include="Abstract\IUserValidator.cs" />
-    <Compile Include="Concrete\SerializationStrategies\BinaryUserSerializationStrategy.cs" />
-    <Compile Include="Concrete\SerializationStrategies\XmlUserSerializationStrategy.cs" />
-    <Compile Include="Concrete\Services\UserStorageServiceMaster.cs" />
-    <Compile Include="Concrete\Services\UserStorageServiceLog.cs" />
-    <Compile Include="Concrete\UserIdGenerator.cs" />
-    <Compile Include="Abstract\UserStorageServiceDecorator.cs" />
-    <Compile Include="Concrete\Services\UserStorageServiceSlave.cs" />
-    <Compile Include="Concrete\Repositories\UserRepository.cs" />
-    <Compile Include="Concrete\Repositories\UserFileRepository.cs" />
-    <Compile Include="Concrete\Validators\UserValidator.cs" />
+    <Compile Include="Repositories\Abstract\INotificationSubscriber.cs" />
+    <Compile Include="Generators\Abstract\IUserIdGenerator.cs" />
+    <Compile Include="Repositories\Abstract\IUserRepository.cs" />
+    <Compile Include="SerializationStrategies\Abstract\IUserSerializationStrategy.cs" />
+    <Compile Include="Services\Abstract\IUserStorageService.cs" />
+    <Compile Include="Validators\Abstract\IUserValidator.cs" />
+    <Compile Include="SerializationStrategies\Concrete\BinaryUserSerializationStrategy.cs" />
+    <Compile Include="SerializationStrategies\Concrete\XmlUserSerializationStrategy.cs" />
+    <Compile Include="Services\Concrete\UserStorageServiceMaster.cs" />
+    <Compile Include="Services\Concrete\UserStorageServiceLog.cs" />
+    <Compile Include="Generators\Concrete\UserIdGenerator.cs" />
+    <Compile Include="Services\Abstract\UserStorageServiceDecorator.cs" />
+    <Compile Include="Services\Concrete\UserStorageServiceSlave.cs" />
+    <Compile Include="Repositories\Concrete\UserRepository.cs" />
+    <Compile Include="Repositories\Concrete\UserFileRepository.cs" />
+    <Compile Include="Validators\Concrete\UserValidator.cs" />
     <Compile Include="CustomExceptions\AgeExceedsLimitsException.cs" />
     <Compile Include="CustomExceptions\FirstNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\LastNameIsNullOrEmptyException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="Enums\UserStorageServiceMode.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Abstract\UserStorageServiceBase.cs" />
+    <Compile Include="Services\Abstract\UserStorageServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

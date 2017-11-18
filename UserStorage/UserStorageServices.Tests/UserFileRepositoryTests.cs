@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UserStorageServices.Concrete.Repositories;
-using UserStorageServices.Concrete.SerializationStrategies;
+using UserStorageServices.Repositories.Concrete;
+using UserStorageServices.SerializationStrategies.Concrete;
 
 namespace UserStorageServices.Tests
 {
