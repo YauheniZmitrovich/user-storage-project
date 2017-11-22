@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications.Concrete;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Services.Concrete;
 
@@ -570,6 +571,56 @@ namespace UserStorageServices.Tests
 
             // Assert
             Assert.IsTrue(master.Count == 0 && slave1.Count == 0 && slave2.Count == 0);
+        }
+
+        #endregion
+
+        #region NotificationTests
+
+        [TestMethod]
+        public void Add_WithNotification_AllAdded()
+        {
+            // Arrange
+            var vasya = new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 20
+            };
+
+            var slave = new UserStorageServiceSlave();
+            var master = new UserStorageServiceMaster();
+            ((NotificationSender)master.Sender).Receiver = slave.Receiver;
+
+
+            // Act
+            master.Add(vasya);
+
+            // Assert
+            Assert.IsTrue(master.Count == 1 && slave.Count == 1);
+        }
+
+        [TestMethod]
+        public void Remove_WithNotification_AllRemoved()
+        {
+            // Arrange
+            var vasya = new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 20
+            };
+
+            var slave = new UserStorageServiceSlave();
+            var master = new UserStorageServiceMaster();
+            ((NotificationSender)master.Sender).Receiver = slave.Receiver;
+            master.Add(vasya);
+
+            // Act
+            master.Remove(vasya.Id);
+
+            // Assert
+            Assert.IsTrue(master.Count == 0 && slave.Count == 0);
         }
 
         #endregion

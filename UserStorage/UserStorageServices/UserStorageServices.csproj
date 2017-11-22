@@ -47,10 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\NotificationType.cs" />
-    <Compile Include="Notifications\AddUserActionNotification.cs" />
-    <Compile Include="Notifications\DeleteUserActionNotification.cs" />
-    <Compile Include="Notifications\Notification.cs" />
-    <Compile Include="Notifications\NotificationContainer.cs" />
+    <Compile Include="Notifications\Abstract\INotificationReceiver.cs" />
+    <Compile Include="Notifications\Abstract\INotificationSender.cs" />
+    <Compile Include="Notifications\Concrete\AddUserActionNotification.cs" />
+    <Compile Include="Notifications\Concrete\DeleteUserActionNotification.cs" />
+    <Compile Include="Notifications\Concrete\Notification.cs" />
+    <Compile Include="Notifications\Concrete\NotificationContainer.cs" />
+    <Compile Include="Notifications\Concrete\NotificationReceiver.cs" />
+    <Compile Include="Notifications\Concrete\NotificationSender.cs" />
     <Compile Include="Repositories\Abstract\IUserRepositoryManager.cs" />
     <Compile Include="Services\Abstract\INotificationSubscriber.cs" />
     <Compile Include="Generators\Abstract\IUserIdGenerator.cs" />

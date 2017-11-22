@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Notifications
+namespace UserStorageServices.Notifications.Concrete
 {
     public class Notification
     {

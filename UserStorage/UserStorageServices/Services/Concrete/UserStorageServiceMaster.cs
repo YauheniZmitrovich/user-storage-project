@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications.Concrete;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Validators.Abstract;
@@ -38,6 +39,8 @@ namespace UserStorageServices.Services.Concrete
             _slaveServices = slaveServices?.ToList() ?? new List<IUserStorageService>();
 
             _subscribers = new List<INotificationSubscriber>();
+
+            Sender = new NotificationSender();
         }
 
         #endregion
@@ -56,6 +59,11 @@ namespace UserStorageServices.Services.Concrete
         /// Mode of <see cref="UserStorageServiceMaster"/> work. 
         /// </summary>
         public override UserStorageServiceMode Mode => UserStorageServiceMode.MasterNode;
+
+        /// <summary>
+        /// Sender of notifications.
+        /// </summary>
+        public NotificationSender Sender { get; }
 
         #endregion
 
@@ -82,6 +90,21 @@ namespace UserStorageServices.Services.Concrete
             }
 
             OnUserAdded(user);
+
+            Sender.Send(new NotificationContainer
+            {
+                Notifications = new[]
+                {
+                    new Notification
+                    {
+                        Type = NotificationType.AddUser,
+                        Action = new AddUserActionNotification
+                        {
+                            User = user
+                        }
+                    }
+                }
+            });
         }
 
         #endregion
@@ -106,6 +129,21 @@ namespace UserStorageServices.Services.Concrete
             {
                 service.Remove(id);
             }
+
+            Sender.Send(new NotificationContainer
+            {
+                Notifications = new[]
+                {
+                    new Notification
+                    {
+                        Type = NotificationType.DeleteUser,
+                        Action = new DeleteUserActionNotification
+                        {
+                            UserId = id
+                        }
+                    }
+                }
+            });
         }
 
         #endregion

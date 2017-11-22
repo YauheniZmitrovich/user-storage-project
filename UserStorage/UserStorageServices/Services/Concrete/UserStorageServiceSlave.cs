@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications.Abstract;
+using UserStorageServices.Notifications.Concrete;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Validators.Abstract;
@@ -16,12 +18,22 @@ namespace UserStorageServices.Services.Concrete
         /// Create an instance of <see cref="UserStorageServiceSlave"/>. 
         /// </summary>
         public UserStorageServiceSlave(IUserRepository repository = null, IUserValidator validator = null)
-            : base(repository, validator) { }
+            : base(repository, validator)
+        {
+            var receiver = new NotificationReceiver();
+            receiver.Received += NotificationReceived;
+            Receiver = receiver;
+        }
 
         /// <summary>
         /// Mode of <see cref="UserStorageServiceSlave"/> work. 
         /// </summary>
         public override UserStorageServiceMode Mode => UserStorageServiceMode.SlaveNode;
+
+        /// <summary>
+        /// Notification receiver.
+        /// </summary>
+        public INotificationReceiver Receiver { get; }
 
         #endregion
 
@@ -91,6 +103,23 @@ namespace UserStorageServices.Services.Concrete
                 .Contains(calledMethod);
 
             return flag;
+        }
+
+        private void NotificationReceived(NotificationContainer container)
+        {
+            foreach (var item in container.Notifications)
+            {
+                if (item.Type == NotificationType.AddUser)
+                {
+                    var user = ((AddUserActionNotification)item.Action).User;
+                    Add(user);
+                }
+                else
+                {
+                    var userId = ((DeleteUserActionNotification)item.Action).UserId;
+                    Remove(userId);
+                }
+            }
         }
 
         #endregion
