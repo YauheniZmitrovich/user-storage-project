@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using UserStorageServices.Notifications.Abstract;
 
 namespace UserStorageServices.Notifications.Concrete
@@ -18,7 +20,14 @@ namespace UserStorageServices.Notifications.Concrete
 
         public void Send(NotificationContainer container)
         {
-            Receiver.Receive(container);
+            using (var stringWriter = new StringWriter())
+            {
+                var serializer = new XmlSerializer(typeof(NotificationContainer));
+
+                serializer.Serialize(stringWriter, container);
+
+                Receiver.Receive(stringWriter.ToString());
+            }
         }
     }
 }

@@ -9,6 +9,6 @@ namespace UserStorageServices.Notifications.Abstract
 {
     public interface INotificationReceiver
     {
-        void Receive(NotificationContainer container);
+        void Receive(string msg);
     }
 }

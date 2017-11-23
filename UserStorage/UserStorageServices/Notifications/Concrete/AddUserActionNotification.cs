@@ -2,7 +2,7 @@
 
 namespace UserStorageServices.Notifications.Concrete
 {
-    class AddUserActionNotification
+    public class AddUserActionNotification
     {
         [XmlElement("user")]
         public User User { get; set; }
