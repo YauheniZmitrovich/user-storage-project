@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications.Abstract;
 using UserStorageServices.Notifications.Concrete;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.Services.Abstract;
@@ -40,7 +41,7 @@ namespace UserStorageServices.Services.Concrete
 
             _subscribers = new List<INotificationSubscriber>();
 
-            Sender = new NotificationSender();
+            Sender = new CompositeNotificationSender();
         }
 
         #endregion
@@ -63,7 +64,7 @@ namespace UserStorageServices.Services.Concrete
         /// <summary>
         /// Sender of notifications.
         /// </summary>
-        public NotificationSender Sender { get; }
+        public INotificationSender Sender { get; }
 
         #endregion
 

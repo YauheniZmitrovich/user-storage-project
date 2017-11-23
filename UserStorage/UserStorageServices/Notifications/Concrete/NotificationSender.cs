@@ -29,5 +29,10 @@ namespace UserStorageServices.Notifications.Concrete
                 Receiver.Receive(stringWriter.ToString());
             }
         }
+
+        public void AddReceiver(INotificationReceiver receiver)
+        {
+            Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
+        }
     }
 }

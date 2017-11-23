@@ -50,6 +50,7 @@
     <Compile Include="Notifications\Abstract\INotificationReceiver.cs" />
     <Compile Include="Notifications\Abstract\INotificationSender.cs" />
     <Compile Include="Notifications\Concrete\AddUserActionNotification.cs" />
+    <Compile Include="Notifications\Concrete\CompositeNotificationSender.cs" />
     <Compile Include="Notifications\Concrete\DeleteUserActionNotification.cs" />
     <Compile Include="Notifications\Concrete\Notification.cs" />
     <Compile Include="Notifications\Concrete\NotificationContainer.cs" />
