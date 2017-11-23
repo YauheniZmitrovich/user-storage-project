@@ -11,12 +11,12 @@ namespace UserStorageServices.Notifications.Concrete
 {
     public class NotificationReceiver : INotificationReceiver
     {
-        public event Action<NotificationContainer> Received;
-
         public NotificationReceiver()
         {
             Received = c => { };
         }
+
+        public event Action<NotificationContainer> Received;
 
         public void Receive(string msg)
         {

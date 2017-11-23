@@ -594,7 +594,6 @@ namespace UserStorageServices.Tests
             var master = new UserStorageServiceMaster();
             master.Sender.AddReceiver(slave.Receiver);
 
-
             // Act
             master.Add(vasya);
 

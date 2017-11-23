@@ -10,13 +10,13 @@ using UserStorageServices.Notifications.Abstract;
 namespace UserStorageServices.Notifications.Concrete
 {
     public class NotificationSender : INotificationSender
-    {
-        public INotificationReceiver Receiver { get; set; }
-
+    { 
         public NotificationSender(INotificationReceiver receiver = null)
         {
             Receiver = receiver ?? new NotificationReceiver();
         }
+
+        public INotificationReceiver Receiver { get; set; }
 
         public void Send(NotificationContainer container)
         {
