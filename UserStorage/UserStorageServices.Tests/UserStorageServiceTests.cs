@@ -3,6 +3,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications.Abstract;
+using UserStorageServices.Notifications.Concrete;
+using UserStorageServices.Repositories.Concrete;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Services.Concrete;
 
@@ -570,6 +573,125 @@ namespace UserStorageServices.Tests
 
             // Assert
             Assert.IsTrue(master.Count == 0 && slave1.Count == 0 && slave2.Count == 0);
+        }
+
+        #endregion
+
+        #region NotificationTests
+
+        [TestMethod]
+        public void Add_WithNotification_AllAdded()
+        {
+            // Arrange
+            var vasya = new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 20
+            };
+
+            var slave = new UserStorageServiceSlave();
+            var master = new UserStorageServiceMaster();
+            master.Sender.AddReceiver(slave.Receiver);
+
+            // Act
+            master.Add(vasya);
+
+            // Assert
+            Assert.IsTrue(master.Count == 1 && slave.Count == 1);
+        }
+
+        [TestMethod]
+        public void Remove_WithNotification_AllRemoved()
+        {
+            // Arrange
+            var vasya = new User
+            {
+                FirstName = "Vasya",
+                LastName = "Petrov",
+                Age = 20
+            };
+
+            var slave = new UserStorageServiceSlave();
+            var master = new UserStorageServiceMaster();
+            master.Sender.AddReceiver(slave.Receiver);
+            master.Add(vasya);
+
+            // Act
+            master.Remove(vasya.Id);
+
+            // Assert
+            Assert.IsTrue(master.Count == 0 && slave.Count == 0);
+        }
+
+        [TestMethod]
+        public void Add_WithNotificationsSomeSenders_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                LastName = "Vasya",
+                FirstName = "Petrov",
+                Age = 20
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Vasya",
+                FirstName = "Petrov",
+                Age = 20
+            };
+
+            var slaveA = new UserStorageServiceSlave(new UserRepository());
+            var slaveB = new UserStorageServiceSlave(new UserRepository());
+
+            var master = new UserStorageServiceMaster(new UserRepository());
+
+            master.Sender.AddReceiver(slaveA.Receiver);
+            master.Sender.AddReceiver(slaveB.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slaveB.Count && master.Count == slaveA.Count);
+        }
+
+        [TestMethod]
+        public void Remove_WithNotificationsSomeSenders_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = 23,
+                LastName = "Vasya",
+                FirstName = "Petrov",
+                Age = 20
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Vasya",
+                FirstName = "Petrov",
+                Age = 20
+            };
+
+            var slaveA = new UserStorageServiceSlave(new UserRepository());
+            var slaveB = new UserStorageServiceSlave(new UserRepository());
+
+            var master = new UserStorageServiceMaster(new UserRepository());
+
+            master.Sender.AddReceiver(slaveA.Receiver);
+            master.Sender.AddReceiver(slaveB.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            master.Remove(user1);
+            master.Remove(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slaveA.Count && master.Count == 0 && master.Count == slaveB.Count);
         }
 
         #endregion
