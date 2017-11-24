@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Reflection;
+using System.Web.UI;
+using System.Linq;
+using ServiceConfigurationSection;
 using UserStorageServices.Generators.Abstract;
 using UserStorageServices.Repositories.Abstract;
-using UserStorageServices.Repositories.Concrete;
 using UserStorageServices.SerializationStrategies.Abstract;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Validators.Abstract;
@@ -26,6 +29,32 @@ namespace UserStorageServices.Services.Concrete
             string filePath = null,
             IUserIdGenerator generationService = null) =>
             CreateDomain<UserStorageServiceMaster>(repository, strategy, filePath, generationService);
+
+        public static UserStorageServiceMaster DefaultCreation(
+            ServiceConfigurationSection.ServiceConfigurationSection configurationSection,
+            IUserRepository repository = null, 
+            IUserSerializationStrategy strategy = null,
+            string filePath = null, 
+            IUserIdGenerator generationService = null, 
+            IValidator validator = null)
+        {
+            if (configurationSection.ServiceInstances.Count(i => i.Mode == ServiceInstanceMode.Master) != 1)
+            {
+                throw new ConfigurationErrorsException("It should be one MasterService.");
+            }
+
+            var master = CreateMaster(repository, strategy, filePath, generationService);
+
+            foreach (var item in configurationSection.ServiceInstances)
+            {
+                if (item.Mode == ServiceInstanceMode.Slave)
+                {
+                    master.Sender.AddReceiver(CreateSlave().Receiver);
+                }
+            }
+
+            return master;
+        }
 
         private static T CreateDomain<T>(
             IUserRepository repository = null,
