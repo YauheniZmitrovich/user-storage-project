@@ -33,7 +33,7 @@ namespace UserStorageServices.SerializationStrategies.Concrete
             {
                 var temp = formatter.Deserialize(fs);
 
-                users = (HashSet<User>) temp;
+                users = (HashSet<User>)temp;
             }
 
             return users;
