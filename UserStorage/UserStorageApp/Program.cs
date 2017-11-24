@@ -27,7 +27,7 @@ namespace UserStorageApp
                 var path = ConfigurationManager.AppSettings["FilePath"];
                 var repositoryManager = new UserFileRepository(path: path);
 
-                var master = DomainFactoryService.DefaultCreation(serviceConfiguration,repositoryManager);
+                var master = DomainFactoryService.DefaultCreation(serviceConfiguration, repositoryManager);
 
                 var client = new Client(master, repositoryManager);
 
