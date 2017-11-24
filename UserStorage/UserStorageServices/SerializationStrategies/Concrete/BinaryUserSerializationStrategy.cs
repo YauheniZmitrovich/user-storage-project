@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UserStorageServices.SerializationStrategies.Abstract;
 
 namespace UserStorageServices.SerializationStrategies.Concrete
 {
+    [Serializable]
     public class BinaryUserSerializationStrategy : IUserSerializationStrategy
     {
         public void SerializeUsers(HashSet<User> users, string fileName)
@@ -27,9 +29,11 @@ namespace UserStorageServices.SerializationStrategies.Concrete
 
             HashSet<User> users;
 
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
-                users = (HashSet<User>)formatter.Deserialize(fs);
+                var temp = formatter.Deserialize(fs);
+
+                users = (HashSet<User>)temp;
             }
 
             return users;

@@ -9,6 +9,7 @@ namespace UserStorageServices.Services.Concrete
     /// <summary>
     /// Implementation of <see cref="UserStorageServiceDecorator"/>. Log all method calls.
     /// </summary>
+    [Serializable]
     public class UserStorageServiceLog : UserStorageServiceDecorator
     {
         #region Fields

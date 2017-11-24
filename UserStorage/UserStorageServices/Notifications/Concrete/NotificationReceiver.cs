@@ -9,6 +9,7 @@ using UserStorageServices.Notifications.Abstract;
 
 namespace UserStorageServices.Notifications.Concrete
 {
+    [Serializable]
     public class NotificationReceiver : INotificationReceiver
     {
         public NotificationReceiver()

@@ -10,6 +10,7 @@ using UserStorageServices.Validators.Abstract;
 
 namespace UserStorageServices.Services.Concrete
 {
+    [Serializable]
     public sealed class UserStorageServiceSlave : UserStorageServiceBase
     {
         #region Constructors and properties

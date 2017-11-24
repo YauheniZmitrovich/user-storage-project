@@ -1,8 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using UserStorageServices.Enums;
 
 namespace UserStorageServices.Notifications.Concrete
 {
+    [Serializable]
     public class Notification
     {
         [XmlIgnore]

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UserStorageServices.SerializationStrategies.Abstract;
 
 namespace UserStorageServices.SerializationStrategies.Concrete
 {
+    [Serializable]
     public class XmlUserSerializationStrategy : IUserSerializationStrategy
     {
         public void SerializeUsers(HashSet<User> users, string fileName)

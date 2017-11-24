@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace UserStorageServices.Enums
 {
+    [Serializable]
     [XmlType(IncludeInSchema = false)]
     public enum NotificationType
     {

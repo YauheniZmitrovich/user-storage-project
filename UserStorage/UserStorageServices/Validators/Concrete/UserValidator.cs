@@ -4,6 +4,7 @@ using UserStorageServices.Validators.Abstract;
 
 namespace UserStorageServices.Validators.Concrete
 {
+    [Serializable]
     public class UserValidator : IUserValidator
     {
         /// <summary>
