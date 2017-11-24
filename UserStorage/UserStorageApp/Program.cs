@@ -27,12 +27,7 @@ namespace UserStorageApp
                 var path = ConfigurationManager.AppSettings["FilePath"];
                 var repositoryManager = new UserFileRepository(path: path);
 
-                var slaveNode1 = DomainFactoryService.CreateSlave();
-                var slaveNode2 = DomainFactoryService.CreateSlave();
-                var master = DomainFactoryService.CreateMaster(repositoryManager);
-
-                master.Sender.AddReceiver(slaveNode1.Receiver);
-                master.Sender.AddReceiver(slaveNode2.Receiver);
+                var master = DomainFactoryService.DefaultCreation(serviceConfiguration, repositoryManager);
 
                 var client = new Client(master, repositoryManager);
 
