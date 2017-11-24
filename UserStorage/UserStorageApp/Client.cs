@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using UserStorageServices;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.Repositories.Concrete;
@@ -19,13 +20,23 @@ namespace UserStorageApp
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client(IUserStorageService userStorageService = null, IUserRepositoryManager repository = null)
+        public Client(IUserStorageService userStorageService, IUserRepositoryManager repository)
         {
-            var path = ReadSetting("SavePath");
+            _repositoryManager = repository ?? throw new ArgumentNullException(nameof(repository));
 
-            _repositoryManager = repository ?? new UserFileRepository(path: path);
+            _userStorageService = userStorageService ?? throw new ArgumentNullException(nameof(userStorageService));
+        }
 
-            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster((IUserRepository)_repositoryManager));
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Client"/> class.
+        /// </summary>
+        public Client()
+        {
+            var path = ReadSetting("FilePath");
+
+            _repositoryManager = new UserFileRepository(path: path);
+
+            _userStorageService = new UserStorageServiceLog(new UserStorageServiceMaster((IUserRepository)_repositoryManager));
         }
 
         /// <summary>
@@ -35,9 +46,9 @@ namespace UserStorageApp
         {
             User user = new User
             {
-                FirstName = "Alex",
-                LastName = "Black",
-                Age = 25
+                FirstName = "Vitya",
+                LastName = "Stepanov",
+                Age = 20
             };
 
             _repositoryManager.Start();
@@ -46,7 +57,7 @@ namespace UserStorageApp
 
             _userStorageService.Remove(user);
 
-            _userStorageService.SearchByFirstName("Alex");
+            _userStorageService.Add(user);
 
             _repositoryManager.Stop();
         }

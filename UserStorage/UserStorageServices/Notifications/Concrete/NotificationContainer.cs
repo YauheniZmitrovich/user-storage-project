@@ -1,7 +1,9 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace UserStorageServices.Notifications.Concrete
 {
+    [Serializable]
     [XmlRoot("NotificationContainer", IsNullable = false, Namespace = "http://tempuri.org/userService/notification")]
     public class NotificationContainer
     {

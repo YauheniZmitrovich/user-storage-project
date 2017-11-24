@@ -62,6 +62,7 @@
     <Compile Include="Repositories\Abstract\IUserRepository.cs" />
     <Compile Include="SerializationStrategies\Abstract\IUserSerializationStrategy.cs" />
     <Compile Include="Services\Abstract\IUserStorageService.cs" />
+    <Compile Include="Services\Concrete\DomainFactoryService.cs" />
     <Compile Include="Validators\Abstract\IUserValidator.cs" />
     <Compile Include="SerializationStrategies\Concrete\BinaryUserSerializationStrategy.cs" />
     <Compile Include="SerializationStrategies\Concrete\XmlUserSerializationStrategy.cs" />

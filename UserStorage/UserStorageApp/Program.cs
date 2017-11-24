@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.ServiceModel;
 using UserStorageServices.Enums;
+using UserStorageServices.Repositories.Concrete;
 using UserStorageServices.Services.Abstract;
 using UserStorageServices.Services.Concrete;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
@@ -22,13 +24,17 @@ namespace UserStorageApp
             {
                 host.SmartOpen();
 
-                var slaveNode1 = new UserStorageServiceSlave();
-                var slaveNode2 = new UserStorageServiceSlave();
-                var slaveCollection = new List<IUserStorageService>() { slaveNode1, slaveNode2 };
+                var path = ConfigurationManager.AppSettings["FilePath"];
+                var repositoryManager = new UserFileRepository(path: path);
 
-                var storage = new UserStorageServiceMaster(slaveServices: slaveCollection);
-                var storageLog = new UserStorageServiceLog(storage);
-                var client = new Client(storageLog);
+                var slaveNode1 = DomainFactoryService.CreateSlave();
+                var slaveNode2 = DomainFactoryService.CreateSlave();
+                var master = DomainFactoryService.CreateMaster(repositoryManager);
+
+                master.Sender.AddReceiver(slaveNode1.Receiver);
+                master.Sender.AddReceiver(slaveNode2.Receiver);
+
+                var client = new Client(master, repositoryManager);
 
                 client.Run();
 

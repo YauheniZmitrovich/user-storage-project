@@ -7,6 +7,7 @@ using UserStorageServices.Notifications.Abstract;
 
 namespace UserStorageServices.Notifications.Concrete
 {
+    [Serializable]
     public class CompositeNotificationSender : INotificationSender
     {
         private readonly List<INotificationSender> _senders;

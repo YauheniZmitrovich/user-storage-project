@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UserStorageServices.Generators.Abstract;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.SerializationStrategies.Abstract;
@@ -6,6 +7,7 @@ using UserStorageServices.SerializationStrategies.Concrete;
 
 namespace UserStorageServices.Repositories.Concrete
 {
+    [Serializable]
     public class UserFileRepository : UserRepository, IUserRepositoryManager
     {
         private readonly string _fileName;

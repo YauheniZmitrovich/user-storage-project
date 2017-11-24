@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserStorageServices.Enums
 {
+    [Serializable]
     public enum UserStorageServiceMode
     {
         MasterNode,

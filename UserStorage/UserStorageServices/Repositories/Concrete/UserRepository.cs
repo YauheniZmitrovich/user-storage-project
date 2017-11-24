@@ -7,6 +7,7 @@ using UserStorageServices.Repositories.Abstract;
 
 namespace UserStorageServices.Repositories.Concrete
 {
+    [Serializable]
     public class UserRepository : IUserRepository
     {
         public UserRepository(IUserIdGenerator generator = null)
