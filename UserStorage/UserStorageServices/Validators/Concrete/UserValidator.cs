@@ -36,18 +36,25 @@ namespace UserStorageServices.Validators.Concrete
 
             var notNullAttribute = userAgeInfo?.GetCustomAttributes<ValidateNotNullOrEmptyAttribute>().FirstOrDefault();
             if (notNullAttribute != null && string.IsNullOrWhiteSpace(firstName))
+            {
                 throw new FirstNameIsNullOrEmptyException("FirstName is null, empty or whitespace");
+            }
 
             var lengthAttribute = userAgeInfo?.GetCustomAttributes<ValidateMaxLengthAttribute>().FirstOrDefault();
             if (lengthAttribute != null && firstName.Length > lengthAttribute.MaxLength)
-                throw new FirstNameTooLongException($"First name of user must be less than {lengthAttribute?.MaxLength}");
+            {
+                throw new FirstNameTooLongException(
+                    $"First name of user must be less than {lengthAttribute?.MaxLength}");
+            }
 
             var regexAttribute = userAgeInfo?.GetCustomAttributes<ValidateRegexAttribute>().FirstOrDefault();
             if (regexAttribute != null)
             {
                 var regex = new Regex(regexAttribute.RegexString);
                 if (!regex.IsMatch(firstName))
+                {
                     throw new FirstNameFormatException("Wrong format. Try using only letters");
+                }
             }
         }
 
@@ -60,17 +67,23 @@ namespace UserStorageServices.Validators.Concrete
 
             var notNullAttribute = userAgeInfo?.GetCustomAttributes<ValidateNotNullOrEmptyAttribute>().FirstOrDefault();
             if (notNullAttribute != null && string.IsNullOrWhiteSpace(lastName))
+            {
                 throw new LastNameIsNullOrEmptyException("LastName is null, empty or whitespace");
+            }
 
             var lengthAttribute = userAgeInfo?.GetCustomAttributes<ValidateMaxLengthAttribute>().FirstOrDefault();
             if (lengthAttribute != null && lastName.Length > lengthAttribute.MaxLength)
+            {
                 throw new LastNameTooLongException($"Last name of user must be less than {lengthAttribute.MaxLength}");
+            }
 
             var regexAttribute = userAgeInfo?.GetCustomAttributes<ValidateRegexAttribute>().FirstOrDefault();
             if (regexAttribute != null)
             {
-                 if (!Regex.IsMatch(lastName, regexAttribute.RegexString))
+                if (!Regex.IsMatch(lastName, regexAttribute.RegexString))
+                {
                     throw new LastNameFormatException("Wrong format. Try using only letters");
+                }
             }
         }
 
@@ -83,8 +96,13 @@ namespace UserStorageServices.Validators.Concrete
 
             var minMaxAttribute = userAgeInfo?.GetCustomAttributes<ValidateMinMaxAttribute>().FirstOrDefault();
             if (minMaxAttribute != null)
+            {
                 if (age < minMaxAttribute.Min || age > minMaxAttribute.Max)
-                    throw new AgeExceedsLimitsException($"Age of user must be greater than {minMaxAttribute.Min} and less than {minMaxAttribute.Max}");
+                {
+                    throw new AgeExceedsLimitsException(
+                        $"Age of user must be greater than {minMaxAttribute.Min} and less than {minMaxAttribute.Max}");
+                }
+            }
         }
     }
 }

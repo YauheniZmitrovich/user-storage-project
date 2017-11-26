@@ -58,8 +58,8 @@ namespace UserStorageServices.Services.Concrete
             return master;
         }
 
-        public static IUserStorageService CreateService
-            (string serviceType,
+        public static IUserStorageService CreateService(
+            string serviceType,
             IUserRepository repository = null,
             IUserSerializationStrategy strategy = null,
             string filePath = null,
@@ -88,7 +88,8 @@ namespace UserStorageServices.Services.Concrete
                 null,
                 new AppDomainSetup { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase });
 
-            return Activator.CreateInstance(newDomain,
+            return Activator.CreateInstance(
+                newDomain,
                 type.Assembly.FullName,
                 type.FullName,
                 false,
