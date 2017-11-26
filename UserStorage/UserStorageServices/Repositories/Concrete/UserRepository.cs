@@ -10,6 +10,8 @@ namespace UserStorageServices.Repositories.Concrete
     [Serializable]
     public class UserRepository : IUserRepository
     {
+        private object _lockObject = new Object();
+
         public UserRepository(IUserIdGenerator generator = null)
         {
             Users = new HashSet<User>();
@@ -25,37 +27,49 @@ namespace UserStorageServices.Repositories.Concrete
 
         public User Get(int id)
         {
-            return Users.FirstOrDefault(u => u.Id == id);
+            lock (_lockObject)
+            {
+                return Users.FirstOrDefault(u => u.Id == id);
+            }
         }
 
         public void Set(User user)
         {
-            var sourceUser = Get(user.Id);
-
-            if (sourceUser == null)
+            lock (_lockObject)
             {
-                user.Id = IdGenerator.Generate();
+                var sourceUser = Get(user.Id);
 
-                Users.Add(user);
-            }
-            else
-            {
-                sourceUser.LastName = user.LastName;
-                sourceUser.FirstName = user.FirstName;
-                sourceUser.Age = user.Age;
+                if (sourceUser == null)
+                {
+                    user.Id = IdGenerator.Generate();
+
+                    Users.Add(user);
+                }
+                else
+                {
+                    sourceUser.LastName = user.LastName;
+                    sourceUser.FirstName = user.FirstName;
+                    sourceUser.Age = user.Age;
+                }
             }
         }
 
         public bool Delete(int id)
         {
-            var sourceUser = Get(id);
+            lock (_lockObject)
+            {
+                var sourceUser = Get(id);
 
-            return Users.Remove(sourceUser);
+                return Users.Remove(sourceUser);
+            }
         }
 
         public IEnumerable<User> Query(Predicate<User> comparer)
         {
-            return Users.Select(u => u).Where(u => comparer(u));
+            lock (_lockObject)
+            {
+                return Users.Select(u => u).Where(u => comparer(u));
+            }
         }
     }
 }
