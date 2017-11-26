@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web.Hosting;
+using UserStorageServices.CustomAttributes;
 using UserStorageServices.CustomExceptions;
 using UserStorageServices.Validators.Abstract;
 
@@ -27,9 +32,29 @@ namespace UserStorageServices.Validators.Concrete
         /// </summary>
         public void ValidateFirstName(string firstName)
         {
-            if (string.IsNullOrWhiteSpace(firstName))
+            PropertyInfo userAgeInfo = typeof(User).GetProperty("FirstName");
+
+            var notNullAttribute = userAgeInfo?.GetCustomAttributes<ValidateNotNullOrEmptyAttribute>().FirstOrDefault();
+            if (notNullAttribute != null && string.IsNullOrWhiteSpace(firstName))
             {
-                throw new FirstNameIsNullOrEmptyException("Firstname is null or empty or whitespace");
+                throw new FirstNameIsNullOrEmptyException("FirstName is null, empty or whitespace");
+            }
+
+            var lengthAttribute = userAgeInfo?.GetCustomAttributes<ValidateMaxLengthAttribute>().FirstOrDefault();
+            if (lengthAttribute != null && firstName.Length > lengthAttribute.MaxLength)
+            {
+                throw new FirstNameTooLongException(
+                    $"First name of user must be less than {lengthAttribute?.MaxLength}");
+            }
+
+            var regexAttribute = userAgeInfo?.GetCustomAttributes<ValidateRegexAttribute>().FirstOrDefault();
+            if (regexAttribute != null)
+            {
+                var regex = new Regex(regexAttribute.RegexString);
+                if (!regex.IsMatch(firstName))
+                {
+                    throw new FirstNameFormatException("Wrong format. Try using only letters");
+                }
             }
         }
 
@@ -38,9 +63,27 @@ namespace UserStorageServices.Validators.Concrete
         /// </summary>
         public void ValidateLastName(string lastName)
         {
-            if (string.IsNullOrWhiteSpace(lastName))
+            PropertyInfo userAgeInfo = typeof(User).GetProperty("LastName");
+
+            var notNullAttribute = userAgeInfo?.GetCustomAttributes<ValidateNotNullOrEmptyAttribute>().FirstOrDefault();
+            if (notNullAttribute != null && string.IsNullOrWhiteSpace(lastName))
             {
-                throw new LastNameIsNullOrEmptyException("Lastname is null or empty or whitespace");
+                throw new LastNameIsNullOrEmptyException("LastName is null, empty or whitespace");
+            }
+
+            var lengthAttribute = userAgeInfo?.GetCustomAttributes<ValidateMaxLengthAttribute>().FirstOrDefault();
+            if (lengthAttribute != null && lastName.Length > lengthAttribute.MaxLength)
+            {
+                throw new LastNameTooLongException($"Last name of user must be less than {lengthAttribute.MaxLength}");
+            }
+
+            var regexAttribute = userAgeInfo?.GetCustomAttributes<ValidateRegexAttribute>().FirstOrDefault();
+            if (regexAttribute != null)
+            {
+                if (!Regex.IsMatch(lastName, regexAttribute.RegexString))
+                {
+                    throw new LastNameFormatException("Wrong format. Try using only letters");
+                }
             }
         }
 
@@ -49,9 +92,16 @@ namespace UserStorageServices.Validators.Concrete
         /// </summary>
         public void ValidateAge(int age)
         {
-            if (age < 1 || age > 200)
+            PropertyInfo userAgeInfo = typeof(User).GetProperty("Age");
+
+            var minMaxAttribute = userAgeInfo?.GetCustomAttributes<ValidateMinMaxAttribute>().FirstOrDefault();
+            if (minMaxAttribute != null)
             {
-                throw new AgeExceedsLimitsException("Age have to be more than zero and less than 200");
+                if (age < minMaxAttribute.Min || age > minMaxAttribute.Max)
+                {
+                    throw new AgeExceedsLimitsException(
+                        $"Age of user must be greater than {minMaxAttribute.Min} and less than {minMaxAttribute.Max}");
+                }
             }
         }
     }

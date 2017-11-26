@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using ServiceConfigurationSection;
+using UserStorageServices.CustomAttributes;
 using UserStorageServices.Generators.Abstract;
 using UserStorageServices.Repositories.Abstract;
 using UserStorageServices.SerializationStrategies.Abstract;
@@ -54,6 +56,48 @@ namespace UserStorageServices.Services.Concrete
             }
 
             return master;
+        }
+
+        public static IUserStorageService CreateService(
+            string serviceType,
+            IUserRepository repository = null,
+            IUserSerializationStrategy strategy = null,
+            string filePath = null,
+            IUserIdGenerator generationService = null, 
+            IValidator validator = null)
+        {
+            var types = new List<Type>();
+
+            foreach (var item in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (item.GetCustomAttributes(typeof(MyApplicationServiceAttribute), true).Length > 0)
+                {
+                    types.Add(item);
+                }
+            }
+
+            var type = types.FirstOrDefault(t => t.Name == serviceType);
+
+            if (type == null)
+            {
+                throw new NullReferenceException("There's no such a type in asscembly.");
+            }
+
+            var newDomain = AppDomain.CreateDomain(
+                "AppDomain" + _count++,
+                null,
+                new AppDomainSetup { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase });
+
+            return Activator.CreateInstance(
+                newDomain,
+                type.Assembly.FullName,
+                type.FullName,
+                false,
+                BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance,
+                null,
+                new object[] { repository },
+                null,
+                null).Unwrap() as IUserStorageService;
         }
 
         private static T CreateDomain<T>(

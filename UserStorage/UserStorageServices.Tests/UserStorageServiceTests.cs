@@ -25,7 +25,7 @@ namespace UserStorageServices.Tests
             var userStorageService = new UserStorageServiceMaster();
 
             // Act
-            userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
+            userStorageService.Add(new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" });
 
             // Assert - [ExpectedException]
             Assert.AreEqual(1, userStorageService.Count);
@@ -38,7 +38,7 @@ namespace UserStorageServices.Tests
             var userStorageService = new UserStorageServiceMaster();
 
             // Act
-            userStorageService.Add(age: 5, lastName: "Petrov", firstName: "Vasya");
+            userStorageService.Add(age: 20, lastName: "Petrov", firstName: "Vasya");
 
             // Assert - [ExpectedException]
             Assert.AreEqual(1, userStorageService.Count);
@@ -131,6 +131,42 @@ namespace UserStorageServices.Tests
             // Assert - [ExpectedException]
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(FirstNameFormatException))]
+        public void Add_UserFirstNameWrongFormat_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageServiceMaster();
+
+            // Act
+            userStorageService.Add(new User
+            {
+                FirstName = "111213",
+                LastName = "asdfasd",
+                Age = -40
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(LastNameFormatException))]
+        public void Add_UserLastNameWrongFormat_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageServiceMaster();
+
+            // Act
+            userStorageService.Add(new User
+            {
+                FirstName = "Helen",
+                LastName = "1231231",
+                Age = 20
+            });
+
+            // Assert - [ExpectedException]
+        }
+
         #endregion
 
         #endregion
@@ -146,7 +182,7 @@ namespace UserStorageServices.Tests
             var userStorageService = new UserStorageServiceMaster();
 
             // Act
-            var vasya = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
+            var vasya = new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" };
             userStorageService.Add(vasya);
             userStorageService.Remove(vasya.Id);
 
@@ -161,7 +197,7 @@ namespace UserStorageServices.Tests
             var userStorageService = new UserStorageServiceMaster();
 
             // Act
-            var vasya = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
+            var vasya = new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" };
             userStorageService.Add(vasya);
             userStorageService.Remove(vasya);
 
@@ -380,9 +416,9 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageServiceMaster();
-            var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
+            var user1 = new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" };
 
-            userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
+            userStorageService.Add(new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" });
             userStorageService.Add(user1);
 
             // Act 
@@ -397,9 +433,9 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageServiceMaster();
-            var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
+            var user1 = new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" };
 
-            userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
+            userStorageService.Add(new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" });
             userStorageService.Add(user1);
 
             // Act 
@@ -414,13 +450,13 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageServiceMaster();
-            var user1 = new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" };
+            var user1 = new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" };
 
-            userStorageService.Add(new User() { Age = 5, LastName = "Petrov", FirstName = "Vasya" });
+            userStorageService.Add(new User() { Age = 25, LastName = "Petrov", FirstName = "Vasya" });
             userStorageService.Add(user1);
 
             // Act 
-            var result = userStorageService.SearchByAge(5);
+            var result = userStorageService.SearchByAge(25);
 
             // Assert
             Assert.AreEqual(2, result.Count());
