@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UserStorageServices.CustomAttributes;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications.Abstract;
 using UserStorageServices.Notifications.Concrete;
@@ -11,6 +12,7 @@ using UserStorageServices.Validators.Abstract;
 namespace UserStorageServices.Services.Concrete
 {
     [Serializable]
+    [MyApplicationService("UserStorageMaster")]
     public sealed class UserStorageServiceMaster : UserStorageServiceBase
     {
         #region Fields

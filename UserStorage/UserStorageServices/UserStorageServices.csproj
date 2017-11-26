@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAttributes\MyApplicationService.cs" />
     <Compile Include="CustomAttributes\ValidateMinMaxAttribute.cs" />
     <Compile Include="CustomExceptions\FirstNameFormatException.cs" />
     <Compile Include="CustomExceptions\LastNameFormatException.cs" />
