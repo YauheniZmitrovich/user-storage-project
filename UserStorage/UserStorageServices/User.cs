@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UserStorageServices.CustomAttributes;
 
 namespace UserStorageServices
 {
@@ -19,16 +20,23 @@ namespace UserStorageServices
         /// <summary>
         /// Gets or sets a user first name.
         /// </summary>
+        [ValidateMaxLength(20)]
+        [ValidateNotNullOrEmpty]
+        [ValidateRegex("([A-Za-z])\\w+")]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets a user last name.
         /// </summary>
+        [ValidateMaxLength(25)]
+        [ValidateNotNullOrEmpty]
+        [ValidateRegex("([A-Za-z])\\w+")]
         public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets a user age.
         /// </summary>
+        [ValidateMinMax(18, 110)]
         public int Age { get; set; }
 
         #endregion

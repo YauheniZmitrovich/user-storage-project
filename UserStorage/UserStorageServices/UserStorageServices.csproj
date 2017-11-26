@@ -48,6 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAttributes\ValidateMinMaxAttribute.cs" />
+    <Compile Include="CustomExceptions\FirstNameFormatException.cs" />
+    <Compile Include="CustomExceptions\LastNameFormatException.cs" />
+    <Compile Include="CustomAttributes\ValidateNotNullOrEmptyAttribute.cs" />
+    <Compile Include="CustomAttributes\ValidateRegex.cs" />
+    <Compile Include="CustomExceptions\LastNameTooLongException.cs" />
+    <Compile Include="CustomExceptions\FirstNameTooLongException.cs" />
+    <Compile Include="CustomAttributes\ValidateMaxLengthAttribute.cs" />
     <Compile Include="Enums\NotificationType.cs" />
     <Compile Include="Notifications\Abstract\INotificationReceiver.cs" />
     <Compile Include="Notifications\Abstract\INotificationSender.cs" />
