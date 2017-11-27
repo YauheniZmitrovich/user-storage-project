@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Generators.Abstract;
 using UserStorageServices.Generators.Concrete;
 using UserStorageServices.Repositories.Abstract;
@@ -10,7 +11,7 @@ namespace UserStorageServices.Repositories.Concrete
     [Serializable]
     public class UserRepository : IUserRepository
     {
-        private object _lockObject = new Object();
+        protected ReaderWriterLockSlim _locker = new ReaderWriterLockSlim();
 
         public UserRepository(IUserIdGenerator generator = null)
         {
@@ -27,17 +28,25 @@ namespace UserStorageServices.Repositories.Concrete
 
         public User Get(int id)
         {
-            lock (_lockObject)
+            _locker.EnterReadLock();
+
+            try
             {
                 return Users.FirstOrDefault(u => u.Id == id);
+            }
+            finally
+            {
+                _locker.ExitReadLock();
             }
         }
 
         public void Set(User user)
         {
-            lock (_lockObject)
+            _locker.EnterWriteLock();
+
+            try
             {
-                var sourceUser = Get(user.Id);
+                var sourceUser = Users.FirstOrDefault(u => u.Id == user.Id);
 
                 if (sourceUser == null)
                 {
@@ -52,23 +61,39 @@ namespace UserStorageServices.Repositories.Concrete
                     sourceUser.Age = user.Age;
                 }
             }
+            finally
+            {
+                _locker.ExitWriteLock();
+            }
         }
 
         public bool Delete(int id)
         {
-            lock (_lockObject)
+            _locker.EnterWriteLock();
+
+            try
             {
-                var sourceUser = Get(id);
+                var sourceUser = Users.FirstOrDefault(u => u.Id == id); ;
 
                 return Users.Remove(sourceUser);
+            }
+            finally
+            {
+                _locker.ExitWriteLock();
             }
         }
 
         public IEnumerable<User> Query(Predicate<User> comparer)
         {
-            lock (_lockObject)
+            _locker.EnterReadLock();
+
+            try
             {
                 return Users.Select(u => u).Where(u => comparer(u));
+            }
+            finally
+            {
+                _locker.ExitReadLock();
             }
         }
     }
