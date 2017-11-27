@@ -11,8 +11,6 @@ namespace UserStorageServices.Repositories.Concrete
     [Serializable]
     public class UserRepository : IUserRepository
     {
-        protected ReaderWriterLockSlim _locker = new ReaderWriterLockSlim();
-
         public UserRepository(IUserIdGenerator generator = null)
         {
             Users = new HashSet<User>();
@@ -26,9 +24,11 @@ namespace UserStorageServices.Repositories.Concrete
 
         protected IUserIdGenerator IdGenerator { get; set; }
 
+        protected ReaderWriterLockSlim Locker { get; } = new ReaderWriterLockSlim();
+
         public User Get(int id)
         {
-            _locker.EnterReadLock();
+            Locker.EnterReadLock();
 
             try
             {
@@ -36,13 +36,13 @@ namespace UserStorageServices.Repositories.Concrete
             }
             finally
             {
-                _locker.ExitReadLock();
+                Locker.ExitReadLock();
             }
         }
 
         public void Set(User user)
         {
-            _locker.EnterWriteLock();
+            Locker.EnterWriteLock();
 
             try
             {
@@ -63,29 +63,29 @@ namespace UserStorageServices.Repositories.Concrete
             }
             finally
             {
-                _locker.ExitWriteLock();
+                Locker.ExitWriteLock();
             }
         }
 
         public bool Delete(int id)
         {
-            _locker.EnterWriteLock();
+            Locker.EnterWriteLock();
 
             try
             {
-                var sourceUser = Users.FirstOrDefault(u => u.Id == id); ;
+                var sourceUser = Users.FirstOrDefault(u => u.Id == id);
 
                 return Users.Remove(sourceUser);
             }
             finally
             {
-                _locker.ExitWriteLock();
+                Locker.ExitWriteLock();
             }
         }
 
         public IEnumerable<User> Query(Predicate<User> comparer)
         {
-            _locker.EnterReadLock();
+            Locker.EnterReadLock();
 
             try
             {
@@ -93,7 +93,7 @@ namespace UserStorageServices.Repositories.Concrete
             }
             finally
             {
-                _locker.ExitReadLock();
+                Locker.ExitReadLock();
             }
         }
     }
