@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Generators.Abstract;
 using UserStorageServices.Generators.Concrete;
 using UserStorageServices.Repositories.Abstract;
@@ -23,39 +24,77 @@ namespace UserStorageServices.Repositories.Concrete
 
         protected IUserIdGenerator IdGenerator { get; set; }
 
+        protected ReaderWriterLockSlim Locker { get; } = new ReaderWriterLockSlim();
+
         public User Get(int id)
         {
-            return Users.FirstOrDefault(u => u.Id == id);
+            Locker.EnterReadLock();
+
+            try
+            {
+                return Users.FirstOrDefault(u => u.Id == id);
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
         }
 
         public void Set(User user)
         {
-            var sourceUser = Get(user.Id);
+            Locker.EnterWriteLock();
 
-            if (sourceUser == null)
+            try
             {
-                user.Id = IdGenerator.Generate();
+                var sourceUser = Users.FirstOrDefault(u => u.Id == user.Id);
 
-                Users.Add(user);
+                if (sourceUser == null)
+                {
+                    user.Id = IdGenerator.Generate();
+
+                    Users.Add(user);
+                }
+                else
+                {
+                    sourceUser.LastName = user.LastName;
+                    sourceUser.FirstName = user.FirstName;
+                    sourceUser.Age = user.Age;
+                }
             }
-            else
+            finally
             {
-                sourceUser.LastName = user.LastName;
-                sourceUser.FirstName = user.FirstName;
-                sourceUser.Age = user.Age;
+                Locker.ExitWriteLock();
             }
         }
 
         public bool Delete(int id)
         {
-            var sourceUser = Get(id);
+            Locker.EnterWriteLock();
 
-            return Users.Remove(sourceUser);
+            try
+            {
+                var sourceUser = Users.FirstOrDefault(u => u.Id == id);
+
+                return Users.Remove(sourceUser);
+            }
+            finally
+            {
+                Locker.ExitWriteLock();
+            }
         }
 
         public IEnumerable<User> Query(Predicate<User> comparer)
         {
-            return Users.Select(u => u).Where(u => comparer(u));
+            Locker.EnterReadLock();
+
+            try
+            {
+                return Users.Select(u => u).Where(u => comparer(u));
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
         }
     }
 }
